@@ -1,14 +1,14 @@
 import pygame
 from pack import Pack
+from app import main_app as app
 
 class Camera():
     ## Block Pixels
     BP = 64
 
-    def __init__(self, app, coords = (0, 0), dimensions = (10, 10, 5)):
+    def __init__(self, coords = (0, 0), dimensions = (10, 10, 5)):
         pygame.init()
 
-        self.app = app
         self.coords = coords
         self.dimensions = dimensions
         self.pack = Pack("pack")

@@ -1,5 +1,7 @@
-from mchell import App
-import sys
+# Hide pygame start message
+import os
+os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
 
-if __name__ == "__main__":
-    app = App(sys.argv[1:])
+from app import App
+from commands import *
+import sys
