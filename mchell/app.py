@@ -11,6 +11,7 @@ class App:
 
         self.camera = Camera()
         self.interpreter = Interpreter()
+        self.world = self.interpreter.world
 
 main_app = App(sys.argv[1:])
 main_app.start()

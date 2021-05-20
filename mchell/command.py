@@ -10,7 +10,7 @@ class CommandInfo:
 
     def execute(self):
         if self.command:
-            self.command.execute(self.execute_at, self.execute_by)
+            self.command.execute_valid(self.execute_at, self.execute_by)
 
     def get_command(self):
         args = self.raw.split(" ")
@@ -25,6 +25,47 @@ class CommandInfo:
 class Command:
     def __init__(self, args):
         self.args = args
+        self.valid = False
+        self.schemes = []
 
-    def execute(self, execute_at, execute_by):
-        pass
+    def execute_valid(self, execute_at, execute_by):
+        if self.valid:
+            self.execute(execute_at, execute_by)
+        else:
+            print("Invalid Command")
+
+    def process_args(self):
+        ## Try find valid arguments for each scheme
+        for scheme in self.schemes:
+            self.pargs = self.process_args_with_scheme(scheme)
+
+            if self.pargs:
+                break
+        
+        self.valid = bool(self.pargs)
+
+    def process_args_with_scheme(self, scheme):
+        pargs = {}
+
+        index = 0
+        min_scheme = scheme[0]
+
+        for arg in scheme[1:]:
+            # Reached end of args
+            if index >= len(self.args):
+                break
+
+            min_scheme -= 1
+            name, value, index = arg.get_data(self.args, index)
+
+            if value is not None:
+                pargs[name] = value
+            else:
+                return False
+
+        # If min scheme
+        if min_scheme <= 0:
+            return pargs
+
+        return False
+
