@@ -27,48 +27,45 @@ class Target:
             variable = self.selector[:2]
             raw_args = self.selector[3:-1]
 
-            if not raw_args:
-                return
+            if raw_args:
+                scores = re.match("{.*}", raw_args)
+                if scores:
+                    raw_args = re.sub("{.*}", "", raw_args)
+                
+                
+                for arg in raw_args.split(","):
+                    k, v = arg.split("=")
 
-            scores = re.match("{.*}", raw_args)
-            if scores:
-                raw_args = re.sub("{.*}", "", raw_args)
-            
-            
-            for arg in raw_args.split(","):
-                k, v = arg.split("=")
+                    if k == "x":
+                        self.args["coordinates"].update(x=v)
+                    elif k == "y":
+                        self.args["coordinates"].update(y=v)
+                    elif k == "z":
+                        self.args["coordinates"].update(z=v)
+                    elif k == "dx":
+                        self.args["delta"].update(x=v)
+                    elif k == "dy":
+                        self.args["delta"].update(y=v)
+                    elif k == "dz":
+                        self.args["delta"].update(z=v)
+                    elif k == "rm":
+                        self.args["radius"][0] = float(v)
+                    elif k == "r":
+                        self.args["radius"][1] = float(v)
+                    elif k == "name":
+                        self.args["name"] = v
+                    elif k == "type":
+                        self.args["type"] = v
+                    elif k == "c":
+                        self.args["count"] = int(v)
+                    elif k == "scores":
+                        self.args["scores"] = scores
+                    elif k == "tag":
+                        self.args["tags"].append(v)
 
-                if k == "x":
-                    self.args["coordinates"].update(x=v)
-                elif k == "y":
-                    self.args["coordinates"].update(y=v)
-                elif k == "z":
-                    self.args["coordinates"].update(z=v)
-                elif k == "dx":
-                    self.args["delta"].update(x=v)
-                elif k == "dy":
-                    self.args["delta"].update(y=v)
-                elif k == "dz":
-                    self.args["delta"].update(z=v)
-                elif k == "rm":
-                    self.args["radius"][0] = float(v)
-                elif k == "r":
-                    self.args["radius"][1] = float(v)
-                elif k == "name":
-                    self.args["name"] = v
-                elif k == "type":
-                    self.args["type"] = v
-                elif k == "c":
-                    self.args["count"] = int(v)
-                elif k == "scores":
-                    self.args["scores"] = scores
-                elif k == "tag":
-                    self.args["tags"].append(v)
-
-                self.process_variable(self.selector[:2])
+            self.process_variable(self.selector[:2])
     
     def process_variable(self, var):
-        
         if var == "@a":
             self.args["type"] = "player"
                 
