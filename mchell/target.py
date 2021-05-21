@@ -30,8 +30,9 @@ class Target:
 
             if raw_args:
                 spattern = r'(?<={).*(?=})'
-                scores = re.search(spattern, raw_args).group(0)
+                scores = re.search(spattern, raw_args)
                 if scores:
+                    scores = scores.group(0)
                     raw_args = re.sub(spattern, "_", raw_args)
                 
                 
