@@ -40,13 +40,19 @@ class Camera():
                 bx = self.coordinates.x + x
                 by = self.coordinates.y + y
 
-                block = self.get_block(Coordinates(bx, by, 0))
+                for z in range(0, self.dimensions.z):
+                    bz = self.coordinates.z + z
+                    block = self.get_block(Coordinates(bx, by, bz)).identifier
+
+                    if block != "air":
+                        break
+                
                 coordinates = (x * self.BP, (self.dimensions.y - y - 1) * self.BP)
 
                 self.draw_block(block, coordinates)
 
     def get_block(self, coordinates):
-        return app.world.get_block(coordinates).identifier
+        return app.world.get_block(coordinates)
 
     def start(self, coordinates, dimensions):
         self.coordinates = coordinates
