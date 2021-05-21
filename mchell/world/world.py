@@ -1,21 +1,70 @@
+import uuid
+from math import sqrt
+
 class World:
     def __init__(self):
         self.blocks = {}
         self.entities = {}
         self.scoreboards = {}
 
-    def set_block(self, coordinates, identifier, data):
-        self.blocks[coordinates] = Block(identifier, data)
+    def set_block(self, coordinates, block):
+        self.blocks[coordinates] = block
     
     def get_block(self, coordinates):
         if coordinates in self.blocks:
             return self.blocks[coordinates]
         return Block("air", 0 )
 
+    def set_entity(self, entity):
+        self.entities[entity.uuid] = entity
+    
+    def kill_entity(self, entity):
+        if entity.uuid in self.entities:
+            del self.entities[entity.uuid]
+
+    def find_entities(self, target, execute_at, execute_by):
+        entities = []
+        for e in self.entities.values():
+            if target.match(e, execute_at, execute_by):
+                entities.append(e)
+        return target.sort(entities, execute_at)
+
 class Block:
-    def __init__(self, identifier, data = 0):
+    def __init__(self, identifier, data):
         self.identifier = identifier
         self.data = data
 
     def __str__(self):
-        return "{}:{}".format(self.identifier, self.data)
+        return "<Block {}:{}>".format(self.identifier, self.data)
+
+class Entity:
+    def __init__(self, identifier, coordinates, name="", euuid=None):
+        if euuid is None:
+            euuid = uuid.uuid4()
+        
+        self.uuid = euuid
+        self.coordinates = coordinates
+        self.identifier = identifier
+        self.name = name
+        self.tags = []
+
+    def add_tag(self, tag):
+        if tag not in self.tags:
+            self.tags.append(tag)
+
+    def remove_tag(self, tag):
+        if tag in self.tags:
+            self.tags.remove(tag)
+    
+    def teleport(self, coordinates):
+        pass
+
+    def distance(self, coordinates):
+        d = (self.coordinates[0] - coordinates[0]) ** 2
+        d += (self.coordinates[1] - coordinates[1]) ** 2
+        d += (self.coordinates[2] - coordinates[2]) ** 2
+
+        return sqrt(d)
+
+    def __str__(self):
+        return "<Entity {}> @ {}".format(self.identifier, self.coordinates)

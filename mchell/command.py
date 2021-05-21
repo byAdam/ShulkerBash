@@ -1,7 +1,7 @@
 from app import main_app as app
 
 class CommandInfo:
-    def __init__(self, raw, execute_by=False, execute_at=False):
+    def __init__(self, raw, execute_at = (0, 0, 0), execute_by = None):
         self.raw = raw
         self.execute_at = execute_at
         self.execute_by = execute_by
@@ -26,7 +26,7 @@ class Command:
     def __init__(self, args):
         self.args = args
         self.valid = False
-        self.schemes = []
+        self.process_args()
 
     def execute_valid(self, execute_at, execute_by):
         if self.valid:
@@ -36,13 +36,13 @@ class Command:
 
     def process_args(self):
         ## Try find valid arguments for each scheme
-        for scheme in self.schemes:
+        for scheme in self.schemes():
             self.pargs = self.process_args_with_scheme(scheme)
 
-            if self.pargs:
+            if self.pargs is not None:
                 break
         
-        self.valid = bool(self.pargs)
+        self.valid = self.pargs is not None
 
     def process_args_with_scheme(self, scheme):
         pargs = {}
@@ -61,11 +61,17 @@ class Command:
             if value is not None:
                 pargs[name] = value
             else:
-                return False
+                return None
 
         # If min scheme
         if min_scheme <= 0:
             return pargs
 
-        return False
+        return None
 
+    def merge_coordinates(self, coords, execute_at):
+        return (
+            int(coords[0][1:]) + execute_at[0] if type(coords[0][0]) is str else coords[0],
+            int(coords[1][1:]) + execute_at[1] if type(coords[1][0]) is str else coords[1],
+            int(coords[2][1:]) + execute_at[2] if type(coords[2][0]) is str else coords[2]
+        )

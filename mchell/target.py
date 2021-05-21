@@ -1,4 +1,5 @@
 import re
+import random
 
 class Target:
     def __init__(self, selector):
@@ -8,7 +9,8 @@ class Target:
             "delta":[None, None, None], 
             "radius": [None, None],
             "tags": [],
-            "sort": "nearest"
+            "sort": "nearest",
+            "count": None
         }
 
         self.process_selector()
@@ -22,9 +24,13 @@ class Target:
             variable = self.selector[:2]
             raw_args = self.selector[3:-1]
 
+            if not raw_args:
+                return
+
             scores = re.match("{.*}", raw_args)
             if scores:
                 raw_args = re.sub("{.*}", "", raw_args)
+            
             
             for arg in raw_args.split(","):
                 k, v = arg.split("=")
@@ -60,11 +66,12 @@ class Target:
                 self.process_variable(self.selector[:2])
     
     def process_variable(self, var):
+        
         if var == "@a":
             self.args["type"] = "player"
                 
         elif var == "@p":
-            self.args["c"] = 1
+            self.args["count"] = 1
             self.args["type"] = "player"
         
         elif var == "@e":
@@ -75,3 +82,22 @@ class Target:
         
         elif var == "@s":
             self.args["self"] = True
+    
+    def match(self, entity, execute_at, execute_by):
+        return True
+
+    def sort(self, entities, execute_at):
+        if self.args["sort"] == "nearest":
+            print(entities)
+            entities.sort(key = lambda x: x.distance(execute_at))
+        elif self.args["sort"] == "random":
+            random.shuffle(entities)
+
+        c = self.args["count"]
+
+        if c is None:
+            return entities
+        elif c < 0:
+            return entities[-c:]
+        else:
+            return entities[:c]

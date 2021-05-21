@@ -21,6 +21,10 @@ class CoordinateArg(CommandArg):
             x = args[i] if args[i][0] == "~" else int(args[i])
             y = args[i+1] if args[i+1][0] == "~" else int(args[i+1])
             z = args[i+2] if args[i+2][0] == "~" else int(args[i+2])
+
+            if x == "~": x = "~0"
+            if y == "~": y = "~0"
+            if z == "~": z = "~0"
         except:
             return None
 
