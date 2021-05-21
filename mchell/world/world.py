@@ -68,3 +68,6 @@ class Entity:
 
     def __str__(self):
         return "<Entity {}:{}> @ {}".format(self.identifier, self.name, self.coordinates)
+
+    def display_name(self):
+        return self.identifier if self.name is None else self.name
