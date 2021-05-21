@@ -57,7 +57,7 @@ class Entity:
             self.tags.remove(tag)
     
     def teleport(self, coordinates):
-        pass
+        self.coordinates = coordinates
 
     def distance(self, coordinates):
         return self.coordinates.distance(coordinates)

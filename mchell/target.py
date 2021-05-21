@@ -59,7 +59,7 @@ class Target:
                 elif k == "type":
                     self.args["type"] = v
                 elif k == "c":
-                    self.args["count"] = float(v)
+                    self.args["count"] = int(v)
                 elif k == "scores":
                     self.args["scores"] = scores
                 elif k == "tag":
