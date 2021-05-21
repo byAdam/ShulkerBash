@@ -1,4 +1,4 @@
 say 1
 say 2
-function demos/test
+function test true
 say 4

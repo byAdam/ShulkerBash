@@ -12,4 +12,4 @@ class Function:
             self.lines = [x.strip() for x in f.readlines()]
 
     def get_commands_for_stack(self, execute_at, execute_by):
-        return [CommandInfo(line, execute_at, execute_by) for line in reversed(self.lines)]
+        return [CommandInfo(line, execute_at, execute_by, self.relative_path) for line in reversed(self.lines)]

@@ -2,7 +2,7 @@ from app import main_app as app
 from coordinates import Coordinates
 
 class CommandInfo:
-    def __init__(self, raw, execute_at = None, execute_by = None):
+    def __init__(self, raw, execute_at = None, execute_by = None, execute_in = None):
         self.raw = raw
 
         if execute_at is None:
@@ -10,12 +10,13 @@ class CommandInfo:
 
         self.execute_at = execute_at
         self.execute_by = execute_by
+        self.execute_in = execute_in
     
         self.command = self.get_command()
 
     def execute(self):
         if self.command:
-            self.command.execute_valid(self.execute_at, self.execute_by)
+            self.command.execute_valid(self.execute_at, self.execute_by, self.execute_in)
 
     def get_command(self):
         if not self.raw or self.raw[0] == "#":
@@ -37,9 +38,13 @@ class Command:
         self.valid = False
         self.process_args()
 
-    def execute_valid(self, execute_at, execute_by):
+    def execute_valid(self, execute_at, execute_by, execute_in):
         if self.valid:
-            self.execute(execute_at, execute_by)
+            from commands.function import FunctionCommand
+            if type(self) is FunctionCommand:
+                self.execute(execute_at, execute_by, execute_in)
+            else:
+                self.execute(execute_at, execute_by)
         else:
             print("Invalid Command")
 
