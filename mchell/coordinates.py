@@ -20,8 +20,14 @@ class Coordinates:
             return self.is_relative(c.x) or self.is_relative(c.y) or self.is_relative(c.z)
         else:
             return (type(c) is str) or (c is None)
+    
+    def has_absolute(self):
+        return (not self.is_relative(self.x)) or (not self.is_relative(self.y)) or (not self.is_relative(self.z))
 
     def parse_value(self, x):
+        if x is None:
+            return 0
+
         try:
             num = float(x)
 
@@ -86,6 +92,9 @@ class Coordinates:
         d += (self.y - other.y) ** 2
         d += (self.z - other.z) ** 2
         return sqrt(d)
+
+    def between(self, x1, x2, x):
+        return min(x1, x2) <= x <= max(x1, x2)
 
     def __eq__(self, other):
         return self.__hash__() == other.__hash__()

@@ -91,8 +91,6 @@ class Target:
 
         coordinates = execute_at.merge(self.args["coordinates"])
 
-        print(coordinates)
-
         if "type" in self.args:
             if self.args["type"] != entity.identifier:
                 return False
@@ -108,7 +106,20 @@ class Target:
         if self.args["radius"][1] is not None:
             if entity.distance(coordinates) > self.args["radius"][1]:
                 return False
-    
+
+        if self.args["delta"].has_absolute():
+            delta = self.args["delta"]
+            dx = coordinates.x + coordinates.parse_value(delta.x)
+            dy = coordinates.y + coordinates.parse_value(delta.y)
+            dz = coordinates.z + coordinates.parse_value(delta.z)
+
+            if not coordinates.between(coordinates.x, dx, entity.coordinates.x):
+                return False
+            if not coordinates.between(coordinates.y, dy, entity.coordinates.y):
+                return False
+            if not coordinates.between(coordinates.z, dz, entity.coordinates.z):
+                return False
+
         return True
 
     def sort(self, entities, execute_at):
