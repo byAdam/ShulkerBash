@@ -1,14 +1,24 @@
 from command import Command
 from app import main_app as app
+from args import *
+import sys
 
 class DebugCommand(Command):
     def schemes(self):
-        return [[0]]
+        return [[1, ListArg("type", ["entities", "scoreboards"])]]
 
     def execute(self, execute_at, execute_by):
-        import sys
-
+        if self.pargs["type"] == "entities":
+            self.debug_entities()
+        elif self.pargs["type"] == "scoreboards":
+            self.debug_scoreboards()
+        
+    def debug_entities(self):
         sys.stdout.write("\n".join(str(x) for x in app.world.entities.values()))
+        sys.stdout.write("\n")
+
+    def debug_scoreboards(self):
+        sys.stdout.write("\n".join(str(x) for x in app.world.scoreboards.values()))
         sys.stdout.write("\n")
 
 app.interpreter.add_command(DebugCommand, "debug")

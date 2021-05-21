@@ -83,7 +83,7 @@ class Target:
         ## If not same entity as executed_by
         if self.args["self"]:
             if execute_by is not None:
-                if execute_by.uuid != entity.uuid:
+                if execute_by != entity:
                     return False
 
         coordinates = execute_at.merge(self.args["coordinates"])

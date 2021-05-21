@@ -16,11 +16,11 @@ class World:
         return Block("air", 0 )
 
     def set_entity(self, entity):
-        self.entities[entity.uuid] = entity
+        self.entities[entity] = entity
     
     def kill_entity(self, entity):
-        if entity.uuid in self.entities:
-            del self.entities[entity.uuid]
+        if entity in self.entities:
+            del self.entities[entity]
 
     def find_entities(self, target, execute_at, execute_by):
         entities = []
@@ -28,6 +28,56 @@ class World:
             if target.match(e, execute_at, execute_by):
                 entities.append(e)
         return target.sort(entities, execute_at)
+
+    def add_objective(self, objective):
+        if objective not in self.scoreboards:
+            self.scoreboards[objective] = Scoreboard(objective)
+
+    def remove_objective(self, objective):
+        if objective in self.scoreboards:
+            del self.scoreboards[objective]
+
+    def set_score(self, entity, objective, value):
+        if objective in self.scoreboards:
+            self.scoreboards[objective].set_score(entity, value)
+
+    def reset_score(self, entity, objective = None):
+        if objective:
+            if objective in self.scoreboards:
+                self.scoreboards[objective].reset_score(entity)
+        else:
+            for sb in self.scoreboards.values():
+                sb.reset_score(entity)
+
+    def get_score(self, entity, objective):
+        if objective in self.scoreboards:
+            return self.scoreboards[objective].get_score(entity)
+        else:
+            return None
+
+class Scoreboard:
+    def __init__(self, objective):
+        self.objective = objective
+        self.scores = {}
+    
+    def set_score(self, entity, value):
+        self.scores[entity] = value
+    
+    def reset_score(self, entity):
+        if entity in self.scores:
+            del self.scores[entity]
+
+    def get_score(self, entity):
+        if entity in self.scores:
+            return self.scores[entity]
+        return None
+
+    def __str__(self):
+        s = "<Scoreboard {}>".format(self.objective)
+        for k, v in self.scores.items():
+            s += "\n"
+            s += "<Value {}:{}>".format(k.display_name(), v)
+        return s
 
 class Block:
     def __init__(self, identifier, data):
@@ -73,3 +123,9 @@ class Entity:
 
     def display_name(self):
         return self.identifier if self.name is None else self.name
+    
+    def __eq__(self, other):
+        return self.uuid == other.uuid
+
+    def __hash__(self):
+        return hash(self.uuid) 
