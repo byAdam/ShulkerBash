@@ -1,18 +1,20 @@
 import pygame
 from pack import Pack
 from app import main_app as app
+import threading
 
 class Camera():
     ## Block Pixels
     BP = 64
 
-    def __init__(self, coordinates = (0, 0), dimensions = (10, 10, 5)):
+    def __init__(self, coordinates = (0, 0, 0), dimensions = (10, 10, 5)):
         pygame.init()
 
         self.coordinates = coordinates
         self.dimensions = dimensions
         self.pack = Pack("pack")
-        
+        self.starting = False
+        self.stopping = False
         self.running = False
 
     def draw_block(self, block, coordinates):
@@ -31,19 +33,27 @@ class Camera():
         return ""
 
     def start(self):
-        self.running = True
-        self.screen = pygame.display.set_mode([self.dimensions[0] * self.BP, self.dimensions[0] * self.BP])
-        self.main_loop()
+        self.starting = True
 
     def stop(self):
-        self.running = False
-        pygame.quit()
+        self.stopping = True
 
     def main_loop(self):
-        while self.running:
-            # Did the user click the window close button?
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    self.stop()
+        while True:
+            if self.starting:
+                self.starting = False
+                self.screen = pygame.display.set_mode([self.dimensions[0] * self.BP, self.dimensions[0] * self.BP])
+                self.running = True
 
-            pygame.display.flip()
+            if self.stopping:
+                self.stopping = False
+                self.running = False
+                pygame.display.quit()
+
+            if self.running:
+                # Did the user click the window close button?
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        self.stop()
+
+                pygame.display.flip()

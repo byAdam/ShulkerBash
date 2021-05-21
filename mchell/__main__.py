@@ -7,3 +7,4 @@ from commands import *
 import sys
 
 app.interpreter.start()
+app.camera.main_loop()

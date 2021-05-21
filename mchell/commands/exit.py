@@ -9,5 +9,6 @@ class ExitCommand(Command):
     
     def execute(self, execute_at, execute_by):
         sys.exit(0)
+        ## TODO: Close pygame nicely
 
 app.interpreter.add_command(ExitCommand, "exit")
