@@ -2,6 +2,7 @@ import re
 import random
 from command import Command
 from coordinates import Coordinates
+from app import main_app as app
 
 class Target:
     def __init__(self, selector):
@@ -28,9 +29,10 @@ class Target:
             raw_args = self.selector[3:-1]
 
             if raw_args:
-                scores = re.match("{.*}", raw_args)
+                spattern = r'(?<={).*(?=})'
+                scores = re.search(spattern, raw_args).group(0)
                 if scores:
-                    raw_args = re.sub("{.*}", "", raw_args)
+                    raw_args = re.sub(spattern, "_", raw_args)
                 
                 
                 for arg in raw_args.split(","):
@@ -59,11 +61,29 @@ class Target:
                     elif k == "c":
                         self.args["count"] = int(v)
                     elif k == "scores":
-                        self.args["scores"] = scores
+                        self.args["scores"] = {}
+                        for score in scores.split(","):
+                            k, v = score.split("=")
+                            self.args["scores"][k] = self.proccess_score(v)
                     elif k == "tag":
                         self.args["tags"].append(v)
 
             self.process_variable(self.selector[:2])
+
+    def proccess_score(self, v):
+        vsplit = v.split("..")
+
+        if len(vsplit) == 1:
+            if v[0] == "!":
+                return {"not": int(v[1:])}
+            else:
+                vmin = int(v)
+                vmax = vmin
+        else:
+            vmin = int(vsplit[0]) if vsplit[0] else None
+            vmax = int(vsplit[1]) if vsplit[1] else None
+
+        return {"min": vmin, "max": vmax}
     
     def process_variable(self, var):
         if var == "@a":
@@ -121,6 +141,22 @@ class Target:
             if not entity.has_tag(tag):
                 return False
                 
+        if "scores" in self.args:
+            for objective, v in self.args["scores"].items():
+                score = app.world.get_score(entity, objective)
+
+                if score is None:
+                    return False
+
+                if "not" in v:
+                    if score == v["not"]:
+                        return False
+                else:
+                    if v["min"] is not None and score < v["min"]:
+                        return False
+                    if v["max"] is not None and score > v["max"]:
+                        return False
+
         return True
 
     def sort(self, entities, execute_at):
