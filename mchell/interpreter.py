@@ -15,8 +15,6 @@ class Interpreter(Thread):
         self.is_shell = is_shell
         self.commands = {}
 
-        self.functions = {}
-        self.read_functions(app.directory)
         
         if not self.is_shell:
             self.main_function = os.path.relpath(app.main_function, app.directory)
@@ -51,6 +49,9 @@ class Interpreter(Thread):
             self.command_stack += self.functions[fname].get_commands_for_stack(execute_at, execute_by)
 
     def run(self):
+        self.functions = {}
+        self.read_functions(app.directory)
+
         if self.is_shell:
             while True:
                 inp = input("> ")
