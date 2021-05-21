@@ -64,7 +64,7 @@ class EntityArg(CommandArg):
 
 class ExecuteArg(CommandArg):
     def value(self, args, index):
-        return CommandInfo(" ".join(args))
+        return " ".join(args[index:])
     
     def index(self, args, index):
         return len(args)
