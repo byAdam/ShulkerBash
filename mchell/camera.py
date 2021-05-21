@@ -2,6 +2,14 @@ import pygame
 from pack import Pack
 from app import main_app as app
 import threading
+from enum import Enum
+
+class CameraState(Enum):
+    INACTIVE = 0
+    STARTING = 1
+    RUNNING = 2
+    STOPPING = 3
+    ENDING = 4
 
 class Camera():
     ## Block Pixels
@@ -13,9 +21,8 @@ class Camera():
         self.coordinates = coordinates
         self.dimensions = dimensions
         self.pack = Pack("pack")
-        self.starting = False
-        self.stopping = False
-        self.running = False
+        self.state = CameraState.INACTIVE
+
 
     def draw_block(self, block, coordinates):
         texture = self.pack.blocks["unknown"]
@@ -33,27 +40,32 @@ class Camera():
         return ""
 
     def start(self):
-        self.starting = True
+        self.state = CameraState.STARTING
 
     def stop(self):
-        self.stopping = True
+        self.state = CameraState.STOPPING
+
+    def end(self):
+        self.state = CameraState.ENDING
 
     def main_loop(self):
-        while True:
-            if self.starting:
-                self.starting = False
+        ## Until end
+        while self.state != CameraState.ENDING:
+            if self.state == CameraState.STARTING:
                 self.screen = pygame.display.set_mode([self.dimensions[0] * self.BP, self.dimensions[0] * self.BP])
-                self.running = True
+                self.state = CameraState.RUNNING
 
-            if self.stopping:
-                self.stopping = False
-                self.running = False
+            if self.state == CameraState.STOPPING:
+                self.state = CameraState.INACTIVE
                 pygame.display.quit()
 
-            if self.running:
+            if self.state == CameraState.RUNNING:
                 # Did the user click the window close button?
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
                         self.stop()
 
                 pygame.display.flip()
+        
+        pygame.display.quit()
+        pygame.quit()

@@ -7,4 +7,6 @@ from commands import *
 import sys
 
 app.interpreter.start()
-app.camera.main_loop()
+
+if app.has_camera:
+    app.camera.main_loop()
