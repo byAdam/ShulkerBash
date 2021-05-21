@@ -45,26 +45,25 @@ class Target:
                 elif k == "z":
                     self.args["coordinates"].update(z=v)
                 elif k == "dx":
-                    self.args["delta"].x = v
+                    self.args["delta"].update(x=v)
                 elif k == "dy":
-                    self.args["delta"].y = v
+                    self.args["delta"].update(y=v)
                 elif k == "dz":
-                    self.args["delta"].z = v
+                    self.args["delta"].update(z=v)
                 elif k == "rm":
-                    self.args["radius"][0] = v
+                    self.args["radius"][0] = float(v)
                 elif k == "r":
-                    self.args["radius"][1] = v
+                    self.args["radius"][1] = float(v)
                 elif k == "name":
                     self.args["name"] = v
                 elif k == "type":
                     self.args["type"] = v
                 elif k == "c":
-                    self.args["count"] = v
+                    self.args["count"] = float(v)
                 elif k == "scores":
                     self.args["scores"] = scores
                 elif k == "tag":
                     self.args["tags"].append(v)
-
 
                 self.process_variable(self.selector[:2])
     
@@ -90,6 +89,10 @@ class Target:
                 if execute_by.uuid != entity.uuid:
                     return False
 
+        coordinates = execute_at.merge(self.args["coordinates"])
+
+        print(coordinates)
+
         if "type" in self.args:
             if self.args["type"] != entity.identifier:
                 return False
@@ -98,6 +101,14 @@ class Target:
             if self.args["name"] != entity.name:
                 return False
         
+        if self.args["radius"][0] is not None:
+            if entity.distance(coordinates) < self.args["radius"][0]:
+                return False
+
+        if self.args["radius"][1] is not None:
+            if entity.distance(coordinates) > self.args["radius"][1]:
+                return False
+    
         return True
 
     def sort(self, entities, execute_at):

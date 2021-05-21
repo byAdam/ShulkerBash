@@ -15,11 +15,11 @@ class Coordinates:
         if z is not None:
             self.z = self.parse_value(z)
 
-    def is_relative(self, coord = None):
-        if coord is None:
-            return (type(self.x) is str) or (type(self.y) is str) or (type(self.z) is str)
+    def is_relative(self, c):
+        if type(c) is Coordinates:
+            return self.is_relative(c.x) or self.is_relative(c.y) or self.is_relative(c.z)
         else:
-            return type(coord) is str
+            return (type(c) is str) or (c is None)
 
     def parse_value(self, x):
         try:
@@ -33,6 +33,9 @@ class Coordinates:
             return x
             
     def parse_relative(self, x):
+        if x is None:
+            return 0
+
         if type(x) is not str:
             return x
 
@@ -42,16 +45,13 @@ class Coordinates:
         else:
             return 0
 
-    def is_incomplete(self):
-        return (self.x is None) or (self.y is None) or (self.z is None)
-
     def merge(self, other):
         ## You can't merge onto relative coordinates
-        if self.is_relative() or self.is_incomplete():
+        if self.is_relative(self):
             return False
         
         ## If the other coordinates are undefined
-        if other is None or other.is_incomplete():
+        if other is None:
             return self
 
         new_x = self.x

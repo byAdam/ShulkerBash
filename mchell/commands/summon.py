@@ -14,10 +14,6 @@ class SummonCommand(Command):
 
         coordinates = execute_at.merge(self.pargs.get("coordinates"))
         name = self.pargs.get("name")
-        
-        print(execute_at)
-        print(self.pargs.get("coordinates"))
-        print(coordinates)
 
         entity = Entity(self.pargs["entity"], coordinates, name)
         app.world.set_entity(entity)
