@@ -120,6 +120,10 @@ class Target:
             if not coordinates.between(coordinates.z, dz, entity.coordinates.z):
                 return False
 
+        for tag in self.args["tags"]:
+            if not entity.has_tag(tag):
+                return False
+                
         return True
 
     def sort(self, entities, execute_at):

@@ -56,6 +56,12 @@ class Entity:
         if tag in self.tags:
             self.tags.remove(tag)
     
+    def has_tag(self, tag):
+        if tag[0] == "!":
+            return not tag[1:] in self.tags
+        else:
+            return tag in self.tags
+    
     def teleport(self, coordinates):
         self.coordinates = coordinates
 

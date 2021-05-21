@@ -6,8 +6,8 @@ from args import *
 class TeleportCommand(Command):
     def schemes(self):
         return [
-            [1, TargetArg("target"), CoordinateArg("coordinates")],
-            [1, TargetArg("target"), TargetArg("destination")],
+            [2, TargetArg("target"), CoordinateArg("coordinates")],
+            [2, TargetArg("target"), TargetArg("destination")],
         ]
     
     def execute(self, execute_at, execute_by):
