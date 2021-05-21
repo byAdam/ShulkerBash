@@ -60,11 +60,7 @@ class Entity:
         pass
 
     def distance(self, coordinates):
-        d = (self.coordinates[0] - coordinates[0]) ** 2
-        d += (self.coordinates[1] - coordinates[1]) ** 2
-        d += (self.coordinates[2] - coordinates[2]) ** 2
-
-        return sqrt(d)
+        return self.coordinates.distance(coordinates)
 
     def __str__(self):
         return "<Entity {}:{}> @ {}".format(self.identifier, self.name, self.coordinates)

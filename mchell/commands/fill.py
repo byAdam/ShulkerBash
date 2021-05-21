@@ -2,20 +2,20 @@ from command import Command
 from app import main_app as app
 import sys
 from args import *
+from coordinates import Coordinates
 
 class FillCommand(Command):
     def schemes(self):
-        return [[3, CoordinateArg("coords"), CoordinateArg("dcoords"), BlockArg("block")]]
+        return [[3, CoordinateArg("coordinates"), CoordinateArg("delta_coordinates"), BlockArg("block")]]
     
     def execute(self, execute_at, execute_by):
-        coords = self.merge_coordinates(self.pargs["coords"], execute_at)
-        dcoords = self.merge_coordinates(self.pargs["dcoords"], execute_at)
+        coordinates = execute_at.merge(self.pargs["coordinates"])
+        delta_coordinates = execute_at.merge(self.pargs["delta_coordinates"])
 
-        for x in range(coords[0], dcoords[0] + 1):
-            for y in range(coords[1], dcoords[1] + 1):
-                for z in range(coords[2], dcoords[2] + 1):
-                    print(x, y, z)
-                    app.world.set_block((x, y, z), self.pargs["block"])
+        for x in range(coordinates.x, delta_coordinates.x + 1):
+            for y in range(coordinates.y, delta_coordinates.y + 1):
+                for z in range(coordinates.z, delta_coordinates.z + 1):
+                    app.world.set_block(Coordinates(x, y, z), self.pargs["block"])
 
 
 app.interpreter.add_command(FillCommand, "fill")

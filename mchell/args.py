@@ -1,6 +1,7 @@
 from world.world import *
 from command import CommandInfo
 from target import Target
+from coordinates import Coordinates
 
 class CommandArg:
     def __init__(self, name):
@@ -18,17 +19,9 @@ class CommandArg:
 class CoordinateArg(CommandArg):
     def value(self, args, i):
         try:
-            x = args[i] if args[i][0] == "~" else int(args[i])
-            y = args[i+1] if args[i+1][0] == "~" else int(args[i+1])
-            z = args[i+2] if args[i+2][0] == "~" else int(args[i+2])
-
-            if x == "~": x = "~0"
-            if y == "~": y = "~0"
-            if z == "~": z = "~0"
+            return Coordinates(args[i], args[i+1], args[i+2])
         except:
             return None
-
-        return x, y, z
 
     def index(self, args, index):
         return index + 3

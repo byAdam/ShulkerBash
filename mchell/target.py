@@ -1,13 +1,14 @@
 import re
 import random
 from command import Command
+from coordinates import Coordinates
 
 class Target:
     def __init__(self, selector):
         self.selector = selector
         self.args = {
-            "coords":[None, None, None], 
-            "delta":[None, None, None], 
+            "coordinates": Coordinates(), 
+            "delta": Coordinates(), 
             "radius": [None, None],
             "tags": [],
             "sort": "nearest",
@@ -38,17 +39,17 @@ class Target:
                 k, v = arg.split("=")
 
                 if k == "x":
-                    self.args["coords"][0] = v
+                    self.args["coordinates"].update(x=v)
                 elif k == "y":
-                    self.args["coords"][1] = v
+                    self.args["coordinates"].update(y=v)
                 elif k == "z":
-                    self.args["coords"][2] = v
+                    self.args["coordinates"].update(z=v)
                 elif k == "dx":
-                    self.args["delta"][0] = v
+                    self.args["delta"].x = v
                 elif k == "dy":
-                    self.args["delta"][1] = v
+                    self.args["delta"].y = v
                 elif k == "dz":
-                    self.args["delta"][0] = v
+                    self.args["delta"].z = v
                 elif k == "rm":
                     self.args["radius"][0] = v
                 elif k == "r":

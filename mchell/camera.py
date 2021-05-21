@@ -6,26 +6,26 @@ class Camera():
     ## Block Pixels
     BP = 64
 
-    def __init__(self, coords = (0, 0), dimensions = (10, 10, 5)):
+    def __init__(self, coordinates = (0, 0), dimensions = (10, 10, 5)):
         pygame.init()
 
-        self.coords = coords
+        self.coordinates = coordinates
         self.dimensions = dimensions
         self.pack = Pack("pack")
         
         self.running = False
 
-    def draw_block(self, block, coords):
+    def draw_block(self, block, coordinates):
         texture = self.pack.blocks["unknown"]
         if block in self.pack.blocks:
             texture = self.pack.blocks[block]
 
-        self.screen.blit(texture, coords)
+        self.screen.blit(texture, coordinates)
 
     def draw_blocks(self, blocks):
         for x in range(0, self.dimensions[0]):
             for y in range(0, self.dimensions[1]):
-                self.draw_block(get_block((x, y)), coords)
+                self.draw_block(get_block((x, y)), coordinates)
 
     def get_block(self, block):
         return ""

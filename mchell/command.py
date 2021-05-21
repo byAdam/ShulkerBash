@@ -1,7 +1,8 @@
 from app import main_app as app
+from coordinates import Coordinates
 
 class CommandInfo:
-    def __init__(self, raw, execute_at = (0, 0, 0), execute_by = None):
+    def __init__(self, raw, execute_at = Coordinates(0, 0, 0), execute_by = None):
         self.raw = raw
         self.execute_at = execute_at
         self.execute_by = execute_by
@@ -68,10 +69,3 @@ class Command:
             return pargs
 
         return None
-
-    def merge_coordinates(self, coords, execute_at):
-        return (
-            int(coords[0][1:]) + execute_at[0] if type(coords[0][0]) is str else coords[0],
-            int(coords[1][1:]) + execute_at[1] if type(coords[1][0]) is str else coords[1],
-            int(coords[2][1:]) + execute_at[2] if type(coords[2][0]) is str else coords[2]
-        )
