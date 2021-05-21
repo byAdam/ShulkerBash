@@ -7,8 +7,6 @@ class SayCommand(Command):
         return [[1, StringArg("text")]]
     
     def execute(self, execute_at, execute_by):
-        import sys
-
         text = []
         for word in self.pargs["text"].split(" "):
             if word[0] == "@":
@@ -17,7 +15,7 @@ class SayCommand(Command):
             else:
                 text.append(word)
 
-        sys.stdout.write(" ".join(text))
-        sys.stdout.write("\n")
+        if text:
+            print(" ".join(text))
 
 app.interpreter.add_command(SayCommand, "say")

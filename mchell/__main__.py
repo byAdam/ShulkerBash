@@ -2,6 +2,8 @@
 import os
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
 
-from app import App
+from app import main_app as app
 from commands import *
 import sys
+
+app.interpreter.start()

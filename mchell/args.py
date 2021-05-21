@@ -3,7 +3,7 @@ from command import CommandInfo
 from target import Target
 from coordinates import Coordinates
 
-class CommandArg:
+class DefaultArg:
     def __init__(self, name):
         self.name = name
 
@@ -16,7 +16,7 @@ class CommandArg:
     def index(self, args, index):
         return index + 1
 
-class CoordinateArg(CommandArg):
+class CoordinateArg(DefaultArg):
     def value(self, args, i):
         try:
             return Coordinates(args[i], args[i+1], args[i+2])
@@ -26,14 +26,14 @@ class CoordinateArg(CommandArg):
     def index(self, args, index):
         return index + 3
 
-class StringArg(CommandArg):
+class StringArg(DefaultArg):
     def value(self, args, index):
         return " ".join(args)
     
     def index(self, args, index):
         return len(args)
 
-class ListArg(CommandArg):
+class ListArg(DefaultArg):
     def __init__(self, name, options):
         super().__init__(name)
         self.options = options
@@ -43,7 +43,7 @@ class ListArg(CommandArg):
             return args[index]
         return None
 
-class BlockArg(CommandArg):
+class BlockArg(DefaultArg):
     def value(self, args, index):
         data = 0
         if index < len(args) - 1:
@@ -59,24 +59,24 @@ class BlockArg(CommandArg):
     def index(self, args, index):
         return index + 2
 
-class EntityArg(CommandArg):
+class EntityArg(DefaultArg):
     pass
 
-class ExecuteArg(CommandArg):
+class ExecuteArg(DefaultArg):
     def value(self, args, index):
         return " ".join(args[index:])
     
     def index(self, args, index):
         return len(args)
 
-class IntegerArg(CommandArg):
+class IntegerArg(DefaultArg):
     def value(self, args, index):
         try:
             return int(args[index])
         except:
             return None
 
-class BooleanArg(CommandArg):
+class BooleanArg(DefaultArg):
     def value(self, args, index):
         if args[index] == "true":
             return True
@@ -84,6 +84,6 @@ class BooleanArg(CommandArg):
             return False
         return None
 
-class TargetArg(CommandArg):
+class TargetArg(DefaultArg):
     def value(self, args, index):
         return Target(args[index])

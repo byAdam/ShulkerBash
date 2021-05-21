@@ -6,8 +6,8 @@ from args import *
 class SummonCommand(Command):
     def schemes(self):
         return [
-            [1, EntityArg("entity"), CoordinateArg("coordinates"), CommandArg("name")],
-            [1, EntityArg("entity"), CommandArg("name"), CoordinateArg("coordinates")]
+            [1, EntityArg("entity"), CoordinateArg("coordinates"), DefaultArg("name")],
+            [1, EntityArg("entity"), DefaultArg("name"), CoordinateArg("coordinates")]
         ]
     
     def execute(self, execute_at, execute_by):

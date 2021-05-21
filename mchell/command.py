@@ -2,11 +2,15 @@ from app import main_app as app
 from coordinates import Coordinates
 
 class CommandInfo:
-    def __init__(self, raw, execute_at = Coordinates(0, 0, 0), execute_by = None):
+    def __init__(self, raw, execute_at = None, execute_by = None):
         self.raw = raw
+
+        if execute_at is None:
+            execute_at = Coordinates(0, 0, 0)
+
         self.execute_at = execute_at
         self.execute_by = execute_by
-
+    
         self.command = self.get_command()
 
     def execute(self):
@@ -14,6 +18,9 @@ class CommandInfo:
             self.command.execute_valid(self.execute_at, self.execute_by)
 
     def get_command(self):
+        if not self.raw or self.raw[0] == "#":
+            return None 
+
         args = self.raw.split(" ")
         command = args[0]
         args = args[1:]
@@ -22,6 +29,7 @@ class CommandInfo:
             return app.interpreter.commands[command](args)
         else:
             print("Error: Unknown command")
+            return None
 
 class Command:
     def __init__(self, args):

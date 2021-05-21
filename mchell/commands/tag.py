@@ -6,7 +6,7 @@ from args import *
 class TagCommand(Command):
     def schemes(self):
         return [
-            [3, TargetArg("target"), ListArg("method", ["add", "remove"]), CommandArg("tag")],
+            [3, TargetArg("target"), ListArg("method", ["add", "remove"]), DefaultArg("tag")],
             [2, TargetArg("target"), ListArg("method", ["list"])]
         ]
     
