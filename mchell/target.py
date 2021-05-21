@@ -1,5 +1,6 @@
 import re
 import random
+from command import Command
 
 class Target:
     def __init__(self, selector):
@@ -10,7 +11,8 @@ class Target:
             "radius": [None, None],
             "tags": [],
             "sort": "nearest",
-            "count": None
+            "count": None,
+            "self": False
         }
 
         self.process_selector()
@@ -73,9 +75,6 @@ class Target:
         elif var == "@p":
             self.args["count"] = 1
             self.args["type"] = "player"
-        
-        elif var == "@e":
-            pass
 
         elif var == "@r":
             self.args["sort"] = "random"
@@ -84,17 +83,32 @@ class Target:
             self.args["self"] = True
     
     def match(self, entity, execute_at, execute_by):
+        ## If not same entity as executed_by
+        if self.args["self"]:
+            if execute_by is not None:
+                if execute_by.uuid != entity.uuid:
+                    return False
+
+        if "type" in self.args:
+            if self.args["type"] != entity.identifier:
+                return False
+        
+        if "name" in self.args:
+            if self.args["name"] != entity.name:
+                return False
+        
         return True
 
     def sort(self, entities, execute_at):
+        ## Sort list
         if self.args["sort"] == "nearest":
-            print(entities)
             entities.sort(key = lambda x: x.distance(execute_at))
         elif self.args["sort"] == "random":
             random.shuffle(entities)
 
         c = self.args["count"]
 
+        ## Filter list by count
         if c is None:
             return entities
         elif c < 0:

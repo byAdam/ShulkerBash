@@ -38,7 +38,7 @@ class Block:
         return "<Block {}:{}>".format(self.identifier, self.data)
 
 class Entity:
-    def __init__(self, identifier, coordinates, name="", euuid=None):
+    def __init__(self, identifier, coordinates, name = None, euuid = None):
         if euuid is None:
             euuid = uuid.uuid4()
         
@@ -67,4 +67,4 @@ class Entity:
         return sqrt(d)
 
     def __str__(self):
-        return "<Entity {}> @ {}".format(self.identifier, self.coordinates)
+        return "<Entity {}:{}> @ {}".format(self.identifier, self.name, self.coordinates)

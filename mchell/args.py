@@ -69,7 +69,7 @@ class BlockArg(CommandArg):
 class EntityArg(CommandArg):
     pass
 
-class CommandArg(CommandArg):
+class ExecuteArg(CommandArg):
     def value(self, args, index):
         return CommandInfo(" ".join(args))
     
