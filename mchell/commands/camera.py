@@ -6,7 +6,7 @@ from args import *
 class CameraCommand(Command):
     def schemes(self):
         return [
-            [3, ListArg("method", ["start"]), CoordinateArg("coordinates"), CoordinateArg("delta_coordinates")],
+            [3, ListArg("method", ["start"]), CoordinateArg("coordinates"), CoordinateArg("dimensions")],
             [1, ListArg("method", ["stop"])],
         ]
     
@@ -21,8 +21,12 @@ class CameraCommand(Command):
 
     def start_camera(self, execute_at, execute_by):
         coordinates = execute_at.merge(self.pargs.get("coordinates"))
-        delta_coordinates = execute_at.merge(self.pargs.get("delta_coordinates"))
+        dimensions = self.pargs.get("dimensions")
 
-        app.camera.start()
+        if not dimensions.is_absolute():
+            print("Need absolute coordinates")
+            return
+
+        app.camera.start(coordinates, dimensions)
 
 app.interpreter.add_command(CameraCommand, "camera")

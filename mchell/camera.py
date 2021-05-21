@@ -3,6 +3,7 @@ from pack import Pack
 from app import main_app as app
 import threading
 from enum import Enum
+from coordinates import Coordinates
 
 class CameraState(Enum):
     INACTIVE = 0
@@ -15,11 +16,12 @@ class Camera():
     ## Block Pixels
     BP = 64
 
-    def __init__(self, coordinates = (0, 0, 0), dimensions = (10, 10, 5)):
+    def __init__(self):
         pygame.init()
+        
+        self.coordinates = Coordinates(0, 0, 0)
+        self.dimensions = Coordinates(2, 2, 0)
 
-        self.coordinates = coordinates
-        self.dimensions = dimensions
         self.pack = Pack("pack")
         self.state = CameraState.INACTIVE
 
@@ -31,15 +33,24 @@ class Camera():
 
         self.screen.blit(texture, coordinates)
 
-    def draw_blocks(self, blocks):
-        for x in range(0, self.dimensions[0]):
-            for y in range(0, self.dimensions[1]):
-                self.draw_block(get_block((x, y)), coordinates)
+    def draw_blocks(self):
+        for x in range(0, self.dimensions.x):
+            for y in range(0, self.dimensions.y):
+                ## Todo: Add z coordinate
+                bx = self.coordinates.x + x
+                by = self.coordinates.y + y
 
-    def get_block(self, block):
-        return ""
+                block = self.get_block(Coordinates(bx, by, 0))
+                coordinates = (x * self.BP, (self.dimensions.y - y - 1) * self.BP)
 
-    def start(self):
+                self.draw_block(block, coordinates)
+
+    def get_block(self, coordinates):
+        return app.world.get_block(coordinates).identifier
+
+    def start(self, coordinates, dimensions):
+        self.coordinates = coordinates
+        self.dimensions = dimensions
         self.state = CameraState.STARTING
 
     def stop(self):
@@ -52,7 +63,8 @@ class Camera():
         ## Until end
         while self.state != CameraState.ENDING:
             if self.state == CameraState.STARTING:
-                self.screen = pygame.display.set_mode([self.dimensions[0] * self.BP, self.dimensions[0] * self.BP])
+                size = [self.dimensions.x * self.BP, self.dimensions.y * self.BP]
+                self.screen = pygame.display.set_mode(size)
                 self.state = CameraState.RUNNING
 
             if self.state == CameraState.STOPPING:
@@ -65,6 +77,7 @@ class Camera():
                     if event.type == pygame.QUIT:
                         self.stop()
 
+                self.draw_blocks()
                 pygame.display.flip()
         
         pygame.display.quit()

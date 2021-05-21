@@ -24,6 +24,9 @@ class Coordinates:
     def has_absolute(self):
         return (not self.is_relative(self.x)) or (not self.is_relative(self.y)) or (not self.is_relative(self.z))
 
+    def is_absolute(self):
+        return (not self.is_relative(self.x)) and (not self.is_relative(self.y)) and (not self.is_relative(self.z))
+
     def parse_value(self, x):
         if x is None:
             return 0
@@ -80,7 +83,7 @@ class Coordinates:
             new_z = other.z
 
         return Coordinates(new_x, new_y, new_z)
-    
+
     def round(self):
         return Coordinates(int(self.x), int(self.y), int(self.z))
     
