@@ -100,11 +100,15 @@ class Camera():
         rel_pos = (pos[0] // self.BP, (self.size[1] - pos[1]) // self.BP)
         x = self.coordinates.x + rel_pos[0]
         y = self.coordinates.y + rel_pos[1]
-        z = self.coordinates.z
-        
-        coords = Coordinates(x, y, z)
 
-        app.world.set_block(coords, Block("air", 0))
+        for z in range(0, self.dimensions.z):
+            bz = self.coordinates.z + z
+            block = self.get_block(Coordinates(x, y, bz)).identifier
+
+            if block != "air":
+                coords = Coordinates(x, y, bz)
+                app.world.set_block(coords, Block("air", 0))
+                break
 
     def display_loop(self):
         if self.screen is None or self.screen.get_size() != self.size:
