@@ -4,6 +4,7 @@ from app import main_app as app
 import threading
 from enum import Enum
 from coordinates import Coordinates
+from world import Block
 
 class CameraState(Enum):
     INACTIVE = 0
@@ -79,16 +80,31 @@ class Camera():
                 pygame.display.quit()
 
             if self.state == CameraState.RUNNING:
-                for event in pygame.event.get():
-                    if event.type == pygame.QUIT:
-                        self.stop()
-                
+                self.proccess_events()
+
                 # Make sure it wasn't stopped
                 if self.state == CameraState.RUNNING:
                     self.display_loop()
 
         pygame.display.quit()
         pygame.quit()
+
+    def proccess_events(self):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                self.stop()
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                self.on_break(pygame.mouse.get_pos())
+    
+    def on_break(self, pos):
+        rel_pos = (pos[0] // self.BP, (self.size[1] - pos[1]) // self.BP)
+        x = self.coordinates.x + rel_pos[0]
+        y = self.coordinates.y + rel_pos[1]
+        z = self.coordinates.z
+        
+        coords = Coordinates(x, y, z)
+
+        app.world.set_block(coords, Block("air", 0))
 
     def display_loop(self):
         if self.screen is None or self.screen.get_size() != self.size:
