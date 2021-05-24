@@ -15,7 +15,11 @@ class SayCommand(Command):
             else:
                 text.append(word)
 
+        name = "@"
+        if execute_by is not None:
+            name = execute_by.display_name()
+
         if text:
-            print(" ".join(text))
+            print("[{}] ".format(name) + " ".join(text))
 
 app.interpreter.add_command(SayCommand, "say")

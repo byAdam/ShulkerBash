@@ -10,6 +10,7 @@ class KillCommand(Command):
     def execute(self, execute_at, execute_by):
         entities = app.world.find_entities(self.pargs["target"], execute_at, execute_by)
         for e in entities:
-            app.world.kill_entity(e)
+            if e.uuid != "main":
+                app.world.kill_entity(e)
 
 app.interpreter.add_command(KillCommand, "kill")

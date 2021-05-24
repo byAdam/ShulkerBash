@@ -18,12 +18,10 @@ class Interpreter(Thread):
         self.is_looping = is_looping
         self.commands = {}
 
-        self.main_entity = Entity("player", Coordinates(0, 0, 0), "main")
+        self.main_entity = Entity("player", Coordinates(0, 0, 0), "main", "main")
         self.world.set_entity(self.main_entity)
-
         self.origin = Coordinates(0, 0, 0)
 
-        
         if not self.is_shell:
             self.main_function = os.path.relpath(app.main_function, app.directory)
 
