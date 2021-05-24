@@ -1,18 +1,20 @@
 from threading import Thread
 from app import main_app as app
 import os
+import time
 
 from world.world import World
 from command import CommandInfo
 from function import Function
 
 class Interpreter(Thread):
-    def __init__(self, is_shell=True):
+    def __init__(self, is_shell=True, is_looping=False):
         super().__init__()
 
         self.world = World()
 
         self.is_shell = is_shell
+        self.is_looping = is_looping
         self.commands = {}
 
         
@@ -58,6 +60,16 @@ class Interpreter(Thread):
                 CommandInfo(inp).execute()
                 self.proccess_stack()
         else:
+            if self.is_looping:
+                while True:
+                    start = time.time()
+                    self.run_function_loop()
+                    duration = time.time() - start
+                    time.sleep(0.05 - duration)
+            else:
+                self.run_function_loop()
+
+    def run_function_loop(self):
             self.add_function_to_stack(self.main_function)
             self.proccess_stack()
 

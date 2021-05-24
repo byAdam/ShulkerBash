@@ -4,12 +4,13 @@ import os
 
 class App:
     def __init__(self, args):
-        self.opts, self.args = getopt.getopt(args, "f:c")
+        self.opts, self.args = getopt.getopt(args, "f:cdl")
 
     
         self.main_function = None
         self.directory = None
         self.has_camera = False
+        self.is_looping = False
         self.proccess_arguments()
 
         self.is_shell = self.main_function is None
@@ -22,6 +23,8 @@ class App:
                 self.directory = v
             if o == "-c":
                 self.has_camera = True
+            if o == "-l":
+                self.is_looping = True
         
         if len(self.args) == 1:
             self.main_function = self.args[0]
@@ -36,7 +39,7 @@ class App:
         from camera import Camera
         from interpreter import Interpreter
 
-        self.interpreter = Interpreter(self.is_shell)
+        self.interpreter = Interpreter(self.is_shell, self.is_looping)
         self.world = self.interpreter.world
 
         if self.has_camera:
