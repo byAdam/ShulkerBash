@@ -1,4 +1,4 @@
-from world.world import *
+from world import *
 from command import CommandInfo
 from target import Target
 from coordinates import Coordinates

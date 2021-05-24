@@ -3,9 +3,10 @@ from app import main_app as app
 import os
 import time
 
-from world.world import World
+from world import World, Entity
 from command import CommandInfo
 from function import Function
+from coordinates import Coordinates
 
 class Interpreter(Thread):
     def __init__(self, is_shell=True, is_looping=False):
@@ -16,6 +17,11 @@ class Interpreter(Thread):
         self.is_shell = is_shell
         self.is_looping = is_looping
         self.commands = {}
+
+        self.main_entity = Entity("player", Coordinates(0, 0, 0), "main")
+        self.world.set_entity(self.main_entity)
+
+        self.origin = Coordinates(0, 0, 0)
 
         
         if not self.is_shell:
@@ -54,10 +60,11 @@ class Interpreter(Thread):
         self.functions = {}
         self.read_functions(app.directory)
 
+
         if self.is_shell:
             while True:
                 inp = input("> ")
-                CommandInfo(inp).execute()
+                CommandInfo(inp, self.origin, self.main_entity).execute()
                 self.proccess_stack()
         else:
             if self.is_looping:
@@ -70,7 +77,7 @@ class Interpreter(Thread):
                 self.run_function_loop()
 
     def run_function_loop(self):
-            self.add_function_to_stack(self.main_function)
+            self.add_function_to_stack(self.main_function, self.origin, self.main_entity)
             self.proccess_stack()
 
     def add_command(self, obj, name):

@@ -14,3 +14,4 @@ class ExitCommand(Command):
 
 
 app.interpreter.add_command(ExitCommand, "exit")
+app.interpreter.add_command(ExitCommand, "quit")
