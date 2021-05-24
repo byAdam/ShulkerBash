@@ -6,27 +6,25 @@ from args import *
 class CameraCommand(Command):
     def schemes(self):
         return [
-            [3, ListArg("method", ["start"]), CoordinateArg("coordinates"), CoordinateArg("dimensions")],
-            [1, ListArg("method", ["stop"])],
+            [2, ListArg("method", ["position"]), CoordinateArg("coordinates")],
+            [2, ListArg("method", ["dimensions"]), CoordinateArg("coordinates")],
+            [1, ListArg("method", ["start","stop"])],
         ]
     
     def execute(self, execute_at, execute_by):
-        if self.pargs["method"] == "start":
-            self.start_camera(execute_at, execute_by)
-        elif self.pargs["method"] == "stop":
-            self.stop_camera()
 
-    def stop_camera(self):
-        app.camera.stop()
-
-    def start_camera(self, execute_at, execute_by):
-        coordinates = execute_at.merge(self.pargs.get("coordinates"))
-        dimensions = self.pargs.get("dimensions")
-
-        if not dimensions.is_absolute():
-            print("Need absolute coordinates")
-            return
-
-        app.camera.start(coordinates, dimensions)
+        m = self.pargs["method"]
+        if m == "start":
+            app.camera.start()
+        elif m == "stop":
+            app.camera.stop()
+        elif m == "position":
+            coordinates = execute_at.merge(self.pargs.get("coordinates"))
+            app.camera.set_position(coordinates)
+        elif m == "dimensions":
+            dim = self.pargs["coordinates"]
+            if dim.is_absolute():
+                app.camera.set_dimensions(dim)
+        
 
 app.interpreter.add_command(CameraCommand, "camera")

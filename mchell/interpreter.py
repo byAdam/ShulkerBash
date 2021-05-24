@@ -27,10 +27,13 @@ class Interpreter(Thread):
 
         self.command_stack = []
 
+        self.functions = {}
+        self.read_functions(app.directory)
+
     def proccess_stack(self):
         while self.command_stack:
             self.command_stack.pop().execute()
-
+    
     def read_functions(self, base, current = ""):
         dpath = os.path.join(base, current)
         for f in os.listdir(dpath):
@@ -40,7 +43,7 @@ class Interpreter(Thread):
             cpath = os.path.join(current, f)
 
             if os.path.isdir(fpath):
-                self.read_functions(base, cpath)
+                pass
             else:
                 fname, extension = os.path.splitext(cpath)
                 if extension == ".mcfunction":
@@ -55,10 +58,6 @@ class Interpreter(Thread):
             self.command_stack += self.functions[fname].get_commands_for_stack(execute_at, execute_by)
 
     def run(self):
-        self.functions = {}
-        self.read_functions(app.directory)
-
-
         if self.is_shell:
             while True:
                 inp = input("> ")

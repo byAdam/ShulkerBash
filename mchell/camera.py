@@ -7,20 +7,18 @@ from coordinates import Coordinates
 
 class CameraState(Enum):
     INACTIVE = 0
-    STARTING = 1
-    RUNNING = 2
-    STOPPING = 3
-    ENDING = 4
+    RUNNING = 1
+    STOPPING = 2
+    ENDING = 3
 
 class Camera():
     ## Block Pixels
     BP = 64
 
     def __init__(self):
-        pygame.init()
-        
-        self.coordinates = Coordinates(0, 0, 0)
-        self.dimensions = Coordinates(2, 2, 0)
+        self.set_position(Coordinates(0, 0, 0))
+        self.set_dimensions(Coordinates(2, 2, 1))
+        self.screen = None
 
         self.pack = Pack("pack")
         self.state = CameraState.INACTIVE
@@ -54,13 +52,20 @@ class Camera():
     def get_block(self, coordinates):
         return app.world.get_block(coordinates)
 
-    def start(self, coordinates, dimensions):
+    def set_position(self, coordinates):
         self.coordinates = coordinates
+    
+    def set_dimensions(self, dimensions):
         self.dimensions = dimensions
-        self.state = CameraState.STARTING
+        self.size = (self.dimensions.x * self.BP, self.dimensions.y * self.BP)
+
+    def start(self):
+        pygame.init()
+        self.state = CameraState.RUNNING
 
     def stop(self):
         self.state = CameraState.STOPPING
+        self.screen = None
 
     def end(self):
         self.state = CameraState.ENDING
@@ -68,23 +73,26 @@ class Camera():
     def main_loop(self):
         ## Until end
         while self.state != CameraState.ENDING:
-            if self.state == CameraState.STARTING:
-                size = [self.dimensions.x * self.BP, self.dimensions.y * self.BP]
-                self.screen = pygame.display.set_mode(size)
-                self.state = CameraState.RUNNING
 
             if self.state == CameraState.STOPPING:
                 self.state = CameraState.INACTIVE
                 pygame.display.quit()
 
             if self.state == CameraState.RUNNING:
-                # Did the user click the window close button?
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
                         self.stop()
+                
+                # Make sure it wasn't stopped
+                if self.state == CameraState.RUNNING:
+                    self.display_loop()
 
-                self.draw_blocks()
-                pygame.display.flip()
-        
         pygame.display.quit()
         pygame.quit()
+
+    def display_loop(self):
+        if self.screen is None or self.screen.get_size() != self.size:
+            self.screen = pygame.display.set_mode(self.size)
+
+        self.draw_blocks()
+        pygame.display.flip()

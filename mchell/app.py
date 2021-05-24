@@ -1,15 +1,15 @@
 import getopt
 import sys
 import os
+import threading
 
 class App:
     def __init__(self, args):
-        self.opts, self.args = getopt.getopt(args, "f:cdl")
+        self.opts, self.args = getopt.getopt(args, "f:dl")
 
     
         self.main_function = None
         self.directory = None
-        self.has_camera = False
         self.is_looping = False
         self.proccess_arguments()
 
@@ -21,8 +21,6 @@ class App:
                 self.main_function = v
             if o == "-d":
                 self.directory = v
-            if o == "-c":
-                self.has_camera = True
             if o == "-l":
                 self.is_looping = True
         
@@ -41,9 +39,7 @@ class App:
 
         self.interpreter = Interpreter(self.is_shell, self.is_looping)
         self.world = self.interpreter.world
-
-        if self.has_camera:
-            self.camera = Camera()
+        self.camera = Camera()
 
 main_app = App(sys.argv[1:])
 main_app.start()
