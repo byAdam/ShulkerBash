@@ -14,7 +14,9 @@ class ScoreboardCommand(Command):
             [3, ListArg("type", ["players"]), ListArg("method", ["reset"]), TargetArg("target"), DefaultArg("objective")],
             [6, ListArg("type", ["players"]), ListArg("method", ["random"]), TargetArg("target"), DefaultArg("objective"), IntegerArg("min"), IntegerArg("max")],
             [5, ListArg("type", ["players"]), ListArg("method", ["set", "add", "remove"]), TargetArg("target"), DefaultArg("objective"), IntegerArg("value")],
-            [7, ListArg("type", ["players"]), ListArg("method", ["operation"]), TargetArg("target", "targetSelector"), DefaultArg("objective", "targetObjective"), operators, TargetArg("target_b", "selector"), DefaultArg("objective_b", "objective")]
+            [7, ListArg("type", ["players"]), ListArg("method", ["operation"]), TargetArg("target", "targetSelector"), DefaultArg("objective", "targetObjective"), operators, TargetArg("target_b", "selector"), DefaultArg("objective_b", "objective")],
+            [2, ListArg("type", ["input"]), ListArg("method", ["ask"]), StringArg("message")],
+            [4, ListArg("type", ["input"]), ListArg("method", ["read"]), TargetArg("target"), DefaultArg("objective"), IntegerArg("default")]
         ]
     
     def execute(self, execute_at, execute_by):
@@ -22,6 +24,8 @@ class ScoreboardCommand(Command):
             self.execute_objectives(execute_at, execute_by)
         elif self.pargs["type"] == "players":
             self.execute_players(execute_at, execute_by)
+        elif self.pargs["type"] == "input":
+            self.execute_input(execute_at, execute_by)
 
     def execute_objectives(self, execute_at, execute_by):
         if self.pargs["method"] == "add":
@@ -71,7 +75,29 @@ class ScoreboardCommand(Command):
                         app.world.set_score(other, self.pargs["objective"], score_new[1])
                     else:
                         app.world.set_score(e, self.pargs["objective"], score_new)
-                    
+            elif method == "input":
+                print(sys.stdin.read(1))
+
+    def execute_input(self, execute_at, execute_by):
+        method = self.pargs["method"]
+
+        if method == "ask":
+            message = self.pargs.get("message", "")
+            app.interpreter.set_input(input(message))
+        elif method == "read":
+            entities = app.world.find_entities(self.pargs["target"], execute_at, execute_by)
+            score, newv = app.interpreter.read_input()
+
+            if score is None:
+                if "default" in self.pargs:
+                    score = self.pargs["default"]
+                else:
+                    score = 0
+
+            for e in entities:
+                app.world.set_score(e, self.pargs["objective"], score)
+            
+            app.interpreter.set_input(newv)
 
     def evaluate_operator(self, a, b, op):
         if op == "%=":

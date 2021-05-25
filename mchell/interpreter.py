@@ -20,6 +20,8 @@ class Interpreter(Thread):
         self.is_looping = is_looping
         self.commands = {}
 
+        self.scoreboard_input = None
+
         self.main_entity = Entity("player", Coordinates(0, 0, 0), "main", "main")
         self.world.set_entity(self.main_entity)
         self.origin = Coordinates(0, 0, 0)
@@ -30,6 +32,26 @@ class Interpreter(Thread):
         self.command_stack = []
 
         self.functions = {}
+
+    def set_input(self, text):
+        try:
+            text = int(text)
+        except:
+            pass
+
+        self.scoreboard_input = text
+
+    def read_input(self):
+        if not self.scoreboard_input:
+            return None, None
+
+        if type(self.scoreboard_input) is int:
+            return self.scoreboard_input, None
+        else:
+            char = self.scoreboard_input[0]
+            return ord(char), self.scoreboard_input[1:]
+
+
 
     def proccess_stack(self):
         while self.command_stack:

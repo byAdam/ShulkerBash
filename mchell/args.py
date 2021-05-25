@@ -35,7 +35,7 @@ class StringArg(DefaultArg):
     type_name = "string"
 
     def value(self, args, index):
-        return " ".join(args)
+        return " ".join(args[index:])
     
     def index(self, args, index):
         return len(args)
