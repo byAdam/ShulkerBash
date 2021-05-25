@@ -8,8 +8,7 @@ class ExitCommand(Command):
         return [[0]]
     
     def execute(self, execute_at, execute_by):
-        if app.has_camera:
-            app.camera.end()
+        app.camera.end()
         sys.exit(0)
 
 
