@@ -18,14 +18,16 @@ class CommandInfo:
             self.command = self.get_command()
         except Exception as e:
             ## Issues with parsing command
-            print(e)
+            if not app.hide_errors:
+                print(e)
 
     def execute(self):
         if self.command:
             try:
                 self.command.execute_valid(self.execute_at, self.execute_by, self.execute_in)
             except Exception as e:
-                print(e)
+                if not app.hide_errors:
+                    print(e)
 
     def get_command(self):
         if not self.raw or self.raw[0] == "#":

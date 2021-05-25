@@ -5,12 +5,14 @@ import threading
 
 class App:
     def __init__(self, args):
-        self.opts, self.args = getopt.getopt(args, "f:dl")
+        self.opts, self.args = getopt.getopt(args, "f:dle")
 
     
         self.main_function = None
         self.directory = None
         self.is_looping = False
+        self.hide_errors = False
+
         self.proccess_arguments()
 
         self.is_shell = self.main_function is None
@@ -23,6 +25,8 @@ class App:
                 self.directory = v
             if o == "-l":
                 self.is_looping = True
+            if o == "-e":
+                self.hide_errors = True
         
         if len(self.args) == 1:
             self.main_function = self.args[0]
