@@ -4,7 +4,7 @@ from error import *
 
 class CommandInfo:
     def __init__(self, raw, execute_at = None, execute_by = None, execute_in = None):
-        self.raw = raw
+        self.raw = raw.strip()
 
         if execute_at is None:
             execute_at = Coordinates(0, 0, 0)
@@ -98,8 +98,11 @@ class Command:
         return None
 
     @classmethod
-    def get_help(cls, command):
+    def get_help(cls, command, indent=False):
         from args import ListArg
+
+        if indent:
+            command = "  " + command
 
         pschemes = []
 

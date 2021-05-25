@@ -75,6 +75,7 @@ class Interpreter(Thread):
                     time.sleep(0.05 - duration)
             else:
                 self.run_function_loop()
+                app.exit()
 
     def run_function_loop(self):
             self.add_function_to_stack(self.main_function, self.origin, self.main_entity)
