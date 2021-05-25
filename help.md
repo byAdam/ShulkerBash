@@ -6,6 +6,7 @@ Options and arguments:
   -l  : loop main function
   -e  : hide errors
   -h  : print this help message and exit
+  -b  : debugs the code
   main_function: path of main function
 
 Interpreter Interface:

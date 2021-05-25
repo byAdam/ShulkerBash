@@ -49,24 +49,20 @@ class ScoreboardCommand(Command):
             elif method == "set":
                 app.world.set_score(e, self.pargs["objective"], self.pargs["value"])
             elif method == "add":
-                current = app.world.get_score(e, self.pargs["objective"])
-                if current is None:
-                    current = 0
+                current = app.world.get_score(e, self.pargs["objective"], 0)
 
                 value = current + self.pargs["value"]
                 app.world.set_score(e, self.pargs["objective"], value)
             elif method == "remove":
-                current = app.world.get_score(e, self.pargs["objective"])
-                if current is None:
-                    current = 0
+                current = app.world.get_score(e, self.pargs["objective"], 0)
 
                 value = current - self.pargs["value"]
                 app.world.set_score(e, self.pargs["objective"], value)
             elif method == "operation":
-                score_a = app.world.get_score(e, self.pargs["objective"])
+                score_a = app.world.get_score(e, self.pargs["objective"], 0)
 
                 for other in app.world.find_entities(self.pargs["target_b"], execute_at, execute_by):
-                    score_b = app.world.get_score(other, self.pargs["objective_b"])
+                    score_b = app.world.get_score(other, self.pargs["objective_b"], 0)
 
                     score_new = self.evaluate_operator(score_a, score_b, self.pargs["operator"])
 
@@ -75,8 +71,6 @@ class ScoreboardCommand(Command):
                         app.world.set_score(other, self.pargs["objective"], score_new[1])
                     else:
                         app.world.set_score(e, self.pargs["objective"], score_new)
-            elif method == "input":
-                print(sys.stdin.read(1))
 
     def execute_input(self, execute_at, execute_by):
         method = self.pargs["method"]

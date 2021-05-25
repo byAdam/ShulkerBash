@@ -51,8 +51,6 @@ class Interpreter(Thread):
             char = self.scoreboard_input[0]
             return ord(char), self.scoreboard_input[1:]
 
-
-
     def proccess_stack(self):
         while self.command_stack:
             self.command_stack.pop().execute()
@@ -100,8 +98,8 @@ class Interpreter(Thread):
                 app.exit()
 
     def run_function_loop(self):
-            self.add_function_to_stack(self.main_function, self.origin, self.main_entity)
-            self.proccess_stack()
+        self.add_function_to_stack(self.main_function, self.origin, self.main_entity)
+        self.proccess_stack()
 
     def add_command(self, obj, name):
         self.commands[name] = obj

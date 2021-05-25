@@ -5,14 +5,15 @@ import threading
 
 class App:
     def __init__(self, args):
-        self.opts, self.args = getopt.getopt(args, "f:d:leh")
+        self.opts, self.args = getopt.getopt(args, "f:d:lehb")
 
     
         self.main_function = None
         self.directory = None
         self.is_looping = False
-        self.hide_errors = False
+        self.show_errors = False
         self.camera = None
+        self.debug = False
 
         self.proccess_arguments()
 
@@ -27,9 +28,11 @@ class App:
             if o == "-l":
                 self.is_looping = True
             if o == "-e":
-                self.hide_errors = True
+                self.show_errors = True
             if o == "-h":
                 self.show_help()
+            if o == "-b":
+                self.debug = True
         
         if len(self.args) == 1:
             self.main_function = self.args[0]
@@ -39,6 +42,10 @@ class App:
                 self.directory = os.getcwd()
             else:
                 self.directory = os.path.dirname(self.main_function)
+
+        if self.main_function is None:
+            self.show_errors = True
+
 
     def show_help(self):
         with open("help.md") as f:

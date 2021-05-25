@@ -20,7 +20,7 @@ class Function:
         in_function = False
 
         for line in self.lines:
-            if not line:
+            if not line or re.match(r"^\s*$", line):
                 continue
             elif line.startswith("#"):
                 continue
@@ -33,15 +33,17 @@ class Function:
                 if not white_space:
                     white_space = re.findall(r"^\s*", line)[0]
 
-                if line.startswith(white_space):
+                ## If starts with correct whitespace or is just whitespace
+                elif line.startswith(white_space):
                     function.append(line.strip())
                 else:
                     fname = os.path.dirname(self.relative_path) + fname
                     app.interpreter.functions[fname] = Subfunction(function, fname)
                     in_function = False
+                    self.plines.append(line.strip())
             else:
                 self.plines.append(line.strip())
-    
+
         self.lines = self.plines
 
     def get_commands_for_stack(self, execute_at, execute_by):

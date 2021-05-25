@@ -59,9 +59,12 @@ class World:
             for sb in self.scoreboards.values():
                 sb.reset_score(entity)
 
-    def get_score(self, entity, objective):
+    def get_score(self, entity, objective, default = None):
         if objective in self.scoreboards:
-            return self.scoreboards[objective].get_score(entity)
+            score = self.scoreboards[objective].get_score(entity)
+            if score is None:
+                return default
+            return score
         else:
             raise UnknownObjectiveException(objective)
 

@@ -18,7 +18,10 @@ class CommandInfo:
             self.command = self.get_command()
         except Exception as e:
             ## Issues with parsing command
-            if not app.hide_errors:
+            if app.debug:
+                raise e
+
+            if app.show_errors:
                 print(e)
 
     def execute(self):
@@ -26,7 +29,10 @@ class CommandInfo:
             try:
                 self.command.execute_valid(self.execute_at, self.execute_by, self.execute_in)
             except Exception as e:
-                if not app.hide_errors:
+                if app.debug:
+                    raise e
+
+                if app.show_errors:
                     print(e)
 
     def get_command(self):
