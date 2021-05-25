@@ -6,7 +6,7 @@ from args import *
 class ExecuteCommand(Command):
     def schemes(self):
         return [
-            [3, TargetArg("target"), CoordinateArg("coordinates"), ExecuteArg("command")]
+            [3, TargetArg("target"), CoordinateArg("coordinates", "position"), ExecuteArg("command")]
         ]
     
     def execute(self, execute_at, execute_by):

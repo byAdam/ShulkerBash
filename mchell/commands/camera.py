@@ -6,8 +6,8 @@ from args import *
 class CameraCommand(Command):
     def schemes(self):
         return [
-            [2, ListArg("method", ["position"]), CoordinateArg("coordinates")],
-            [2, ListArg("method", ["dimensions"]), CoordinateArg("coordinates")],
+            [2, ListArg("method", ["position"]), CoordinateArg("coordinates", "position")],
+            [2, ListArg("method", ["dimensions"]), CoordinateArg("coordinates", "dimensions")],
             [1, ListArg("method", ["start","stop"])],
         ]
     

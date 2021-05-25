@@ -5,7 +5,7 @@ from args import *
 
 class SetblockCommand(Command):
     def schemes(self):
-        return [[2, CoordinateArg("coordinates"), BlockArg("block"), ListArg("place_type", ["replace", "destroy", "keep"])]]
+        return [[2, CoordinateArg("coordinates", "position"), BlockArg("block")]]
     
     def execute(self, execute_at, execute_by):
         coordinates = execute_at.merge(self.pargs["coordinates"])

@@ -4,7 +4,7 @@ from args import *
 
 class SayCommand(Command):
     def schemes(self):
-        return [[1, StringArg("text")]]
+        return [[1, StringArg("text", "message")]]
     
     def execute(self, execute_at, execute_by):
         text = []

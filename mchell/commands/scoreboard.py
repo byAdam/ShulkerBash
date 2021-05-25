@@ -6,7 +6,7 @@ from random import randint
 
 class ScoreboardCommand(Command):
     def schemes(self):
-        operators = ListArg("operator", ["%=", "*=", "+=", "-=", "/=", "<", "=", ">", "><"])
+        operators = ListArg("operator", ["%=", "*=", "+=", "-=", "/=", "<", "=", ">", "><"], "operator")
 
         return [
             [3, ListArg("type", ["objectives"]), ListArg("method", ["add"]), DefaultArg("objective"), DefaultArg("criterion")],
@@ -14,7 +14,7 @@ class ScoreboardCommand(Command):
             [3, ListArg("type", ["players"]), ListArg("method", ["reset"]), TargetArg("target"), DefaultArg("objective")],
             [6, ListArg("type", ["players"]), ListArg("method", ["random"]), TargetArg("target"), DefaultArg("objective"), IntegerArg("min"), IntegerArg("max")],
             [5, ListArg("type", ["players"]), ListArg("method", ["set", "add", "remove"]), TargetArg("target"), DefaultArg("objective"), IntegerArg("value")],
-            [5, ListArg("type", ["players"]), ListArg("method", ["operation"]), TargetArg("target"), DefaultArg("objective"), operators, TargetArg("target_b"), DefaultArg("objective_b")]
+            [7, ListArg("type", ["players"]), ListArg("method", ["operation"]), TargetArg("target", "targetSelector"), DefaultArg("objective", "targetObjective"), operators, TargetArg("target_b", "selector"), DefaultArg("objective_b", "objective")]
         ]
     
     def execute(self, execute_at, execute_by):

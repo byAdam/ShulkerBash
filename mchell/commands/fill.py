@@ -6,7 +6,7 @@ from coordinates import Coordinates
 
 class FillCommand(Command):
     def schemes(self):
-        return [[3, CoordinateArg("coordinates"), CoordinateArg("delta_coordinates"), BlockArg("block")]]
+        return [[3, CoordinateArg("coordinates", "from"), CoordinateArg("delta_coordinates", "to"), BlockArg("block")]]
     
     def execute(self, execute_at, execute_by):
         coordinates = execute_at.merge(self.pargs["coordinates"])
