@@ -2,6 +2,7 @@ from command import Command
 from app import main_app as app
 import sys
 from args import *
+from error import *
 
 class TeleportCommand(Command):
     def schemes(self):
@@ -15,9 +16,8 @@ class TeleportCommand(Command):
             coordinates = execute_at.merge(self.pargs.get("coordinates"))
         else:
             d = app.world.find_entities(self.pargs["destination"], execute_at, execute_by)
-            if len(d) != 1:
-                print("Error finding destination")
-                return
+            if len(d) > 1:
+                raise TooManyTargetsException()
             else:
                 coordinates = d[0].coordinates
 

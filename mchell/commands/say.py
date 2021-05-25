@@ -10,7 +10,7 @@ class SayCommand(Command):
         text = []
         for word in self.pargs["text"].split(" "):
             if word[0] == "@":
-                for e in app.world.find_entities(Target(word), execute_at, execute_by):
+                for e in app.world.find_entities(Target(word), execute_at, execute_by, False):
                     text.append(e.display_name())
             else:
                 text.append(word)
@@ -19,7 +19,6 @@ class SayCommand(Command):
         if execute_by is not None:
             name = execute_by.display_name()
 
-        if text:
-            print("[{}] ".format(name) + " ".join(text))
+        print("[{}] ".format(name) + " ".join(text))
 
 app.interpreter.add_command(SayCommand, "say")

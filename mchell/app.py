@@ -38,6 +38,7 @@ class App:
         from interpreter import Interpreter
 
         self.interpreter = Interpreter(self.is_shell, self.is_looping)
+        self.interpreter.read_functions(self.directory)
         self.world = self.interpreter.world
         self.camera = Camera()
 

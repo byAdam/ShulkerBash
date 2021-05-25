@@ -6,8 +6,7 @@ from args import *
 class TagCommand(Command):
     def schemes(self):
         return [
-            [3, TargetArg("target"), ListArg("method", ["add", "remove"]), DefaultArg("tag")],
-            [2, TargetArg("target"), ListArg("method", ["list"])]
+            [3, TargetArg("target"), ListArg("method", ["add", "remove"]), DefaultArg("tag")]
         ]
     
     def execute(self, execute_at, execute_by):
@@ -19,6 +18,5 @@ class TagCommand(Command):
         elif self.pargs["method"] == "remove":
             for e in entities:
                 e.remove_tag(self.pargs["tag"])
-        #Todo: Add List
 
 app.interpreter.add_command(TagCommand, "tag")

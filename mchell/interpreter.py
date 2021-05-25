@@ -8,6 +8,8 @@ from command import CommandInfo
 from function import Function
 from coordinates import Coordinates
 
+from error import UnknownFunctionException
+
 class Interpreter(Thread):
     def __init__(self, is_shell=True, is_looping=False):
         super().__init__()
@@ -28,7 +30,6 @@ class Interpreter(Thread):
         self.command_stack = []
 
         self.functions = {}
-        self.read_functions(app.directory)
 
     def proccess_stack(self):
         while self.command_stack:
@@ -43,7 +44,7 @@ class Interpreter(Thread):
             cpath = os.path.join(current, f)
 
             if os.path.isdir(fpath):
-                pass
+                self.read_functions(base, cpath)
             else:
                 fname, extension = os.path.splitext(cpath)
                 if extension == ".mcfunction":
@@ -56,6 +57,8 @@ class Interpreter(Thread):
 
         if fname in self.functions:
             self.command_stack += self.functions[fname].get_commands_for_stack(execute_at, execute_by)
+        else:
+            raise UnknownFunctionException(fname)
 
     def run(self):
         if self.is_shell:

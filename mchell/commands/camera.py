@@ -2,6 +2,7 @@ from command import Command
 from app import main_app as app
 import sys
 from args import *
+from error import InvalidCommandException
 
 class CameraCommand(Command):
     def schemes(self):
@@ -24,7 +25,12 @@ class CameraCommand(Command):
         elif m == "dimensions":
             dim = self.pargs["coordinates"]
             if dim.is_absolute():
-                app.camera.set_dimensions(dim)
+                if dim.x >= 1 and dim.y >= 1 and dim.z >+ 0:
+                    app.camera.set_dimensions(dim)
+                else:
+                    raise InvalidCommandException(self.raw, "The dimensions must all be greater than or equal to 0")
+            else:
+                raise InvalidCommandException(self.raw, "The dimensions must all be greater than or equal to 0")
         
 
 app.interpreter.add_command(CameraCommand, "camera")

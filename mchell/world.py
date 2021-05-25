@@ -1,6 +1,8 @@
 import uuid
 from math import sqrt
 
+from error import UnknownObjectiveException, NoTargetsException
+
 class World:
     def __init__(self):
         self.blocks = {}
@@ -22,11 +24,15 @@ class World:
         if entity in self.entities:
             del self.entities[entity]
 
-    def find_entities(self, target, execute_at, execute_by):
+    def find_entities(self, target, execute_at, execute_by, need_target = True):
         entities = []
         for e in self.entities.values():
             if target.match(e, execute_at, execute_by):
                 entities.append(e)
+
+        if need_target and len(entities) == 0:
+            raise NoTargetsException()
+
         return target.sort(entities, execute_at)
 
     def add_objective(self, objective):
@@ -40,11 +46,15 @@ class World:
     def set_score(self, entity, objective, value):
         if objective in self.scoreboards:
             self.scoreboards[objective].set_score(entity, value)
+        else:
+            raise UnknownObjectiveException(objective)
 
     def reset_score(self, entity, objective = None):
         if objective:
             if objective in self.scoreboards:
                 self.scoreboards[objective].reset_score(entity)
+            else:
+                raise UnknownObjectiveException(objective)
         else:
             for sb in self.scoreboards.values():
                 sb.reset_score(entity)
@@ -53,7 +63,7 @@ class World:
         if objective in self.scoreboards:
             return self.scoreboards[objective].get_score(entity)
         else:
-            return None
+            raise UnknownObjectiveException(objective)
 
 class Scoreboard:
     def __init__(self, objective):
