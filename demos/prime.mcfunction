@@ -1,36 +1,41 @@
 def loop
-    # Copys input score
-    scoreboard players operation @s prime_tmp = @s prime
-    # Adds 1 to iterator
-    scoreboard players add @s prime_calc 1
-    # Gets prime_tmp % prime_calc
-    scoreboard players operation @s prime_tmp %= @s prime_calc
-    # Gets prime_calc squared
-    scoreboard players operation @s prime_calc_square = @s prime_calc
-    scoreboard players operation @s prime_calc_square *= @s prime_calc_square
-    scoreboard players operation @s prime_calc_square -= @s prime
+    # Adds 1 to index
+    scoreboard players add @s index 1
 
-    # If it does not divide in evenly, run this loop again
-    execute @s[scores={prime_tmp=!0,prime_calc_square=..0}] ~ ~ ~ function loop
+    # Is input divisible by index?
+    scoreboard players operation @s tmp = @s input
+    scoreboard players operation @s tmp %= @s index
+    scoreboard players set @s[scores={tmp=0}] is_prime 0
 
-# Creates objectives
-scoreboard objectives add prime
-scoreboard objectives add prime_tmp
-scoreboard objectives add prime_calc
-scoreboard objectives add prime_calc_square
+    # Is index greater than the input squared?
+    scoreboard players operation @s tmp = @s index
+    scoreboard players operation @s tmp *= @s index
+    scoreboard players operation @s tmp -= @s input
 
-## Waits for user input
+    # If number still could be prime, loop again
+    execute @s[scores={tmp=..-1,is_prime=!0}] ~ ~ ~ function loop
+    
+# Create Objectives
+scoreboard objectives add input
+scoreboard objectives add index
+scoreboard objectives add tmp
+
+scoreboard objectives add is_prime
+
+# Init Variables
+scoreboard players set @s index 1
+scoreboard players set @s is_prime 1
+
+# Get Input
 say Enter your number:
 scoreboard input ask
-scoreboard input read @s prime
-scoreboard players set @s prime_calc 1
+scoreboard input read @s input
 
-# Begins prime loop if input is greater than 1
-execute @s[scores={prime=2..}] ~ ~ ~ function loop
+# If 0 or less, set is_prime to zero
+scoreboard players set @s[scores={input=..0}] is_prime 0
+# If 2 or greater,run loop
+execute @s[scores={input=2..}] ~ ~ ~ function loop
 
-scoreboard players operation @s prime_calc -= @s prime
-## If the number that divides in is the same as the input, prime_calc will be 0
-execute @s[scores={prime=1}] ~ ~ ~ say Not Prime
-execute @s[scores={prime=2..,prime_calc=0}] ~ ~ ~ say Prime
-execute @s[scores={prime_calc=!0,prime_calc_square=1..}] ~ ~ ~ say Prime
-execute @s[scores={prime_calc=!0,prime_calc_square=..0}] ~ ~ ~ say Not Prime
+# Display output 
+execute @s[scores={is_prime=0}] ~ ~ ~ say Not Prime
+execute @s[scores={is_prime=1}] ~ ~ ~ say Prime
