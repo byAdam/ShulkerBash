@@ -21,7 +21,7 @@ class Function:
 
         if j < len(self.lines):
             white_space = re.findall(r"^\s+", self.lines[j])[0]
-            
+
             if white_space == "\n":
                 raise InvalidSubfunctionException(name)
         else:
@@ -30,8 +30,16 @@ class Function:
         subfunction = []
 
         ## Loop through function
-        while j < len(self.lines) and self.lines[j].startswith(white_space):
-            subfunction.append(self.lines[j].strip())
+        ## TODO: Make this more dynamic, so we dont have two parsing functions
+        while j < len(self.lines):
+            line = self.lines[j]
+            if re.match(r"^\s*$", line) or line.strip().startswith("#"):
+                pass
+            elif line.startswith(white_space):
+                subfunction.append(line.strip())
+            else:
+                break
+            
             j += 1
 
 
@@ -48,7 +56,7 @@ class Function:
             line = self.lines[i]
 
             ## If blank line or comment
-            if re.match(r"^\s*$", line) or line.startswith("#"):
+            if re.match(r"^\s*$", line) or line.strip().startswith("#"):
                 pass
             ## If start of subfunction
             elif line.startswith("def"):
