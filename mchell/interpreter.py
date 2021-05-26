@@ -68,7 +68,11 @@ class Interpreter(Thread):
             else:
                 fname, extension = os.path.splitext(cpath)
                 if extension == ".mcfunction":
-                    self.functions[fname] = Function(fpath, cpath)
+                    try:
+                        self.functions[fname] = Function(fpath, cpath)
+                    except Exception as e:
+                        if app.show_errors:
+                            print(e)
 
     def add_function_to_stack(self, fname, execute_at = None, execute_by = None, execute_in = None):
         ## If passed the function its executed in, then find the function relative

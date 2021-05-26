@@ -35,3 +35,8 @@ class NoTargetsException(Exception):
     def __init__(self):
         message = "Error: No targets matched selector"
         super().__init__(message)
+
+class InvalidSubfunctionException(Exception):
+    def __init__(self, name):
+        message = "Invalid Subfunction: {}\n".format(name)
+        super().__init__(message)
