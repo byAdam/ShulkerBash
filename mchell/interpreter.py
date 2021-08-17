@@ -22,7 +22,7 @@ class Interpreter(Thread):
 
         self.scoreboard_input = None
 
-        self.main_entity = Entity("player", Coordinates(0, 0, 0), "main", "main")
+        self.main_entity = Entity("main", Coordinates(0, 0, 0), "main", "main")
         self.world.set_entity(self.main_entity)
         self.origin = Coordinates(0, 0, 0)
 

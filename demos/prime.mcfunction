@@ -13,7 +13,7 @@ def loop
     scoreboard players operation @s tmp -= @s input
 
     # If number still could be prime, loop again
-    execute @s[scores={tmp=..-1,is_prime=!0}] ~ ~ ~ function loop
+    execute @s[scores={tmp=..-1,is_prime=1}] ~ ~ ~ function loop
     
 # Create Objectives
 scoreboard objectives add input
