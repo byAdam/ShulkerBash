@@ -1,4 +1,4 @@
-usage: mchell [options] [main_function]
+usage: shulker [options] [main_function]
 
 Options and arguments:
   -f  : path of main function
@@ -10,4 +10,4 @@ Options and arguments:
   main_function: path of main function
 
 Interpreter Interface:
-  If a main function is not specified, mchell will open an interpreter interface. Users can directly write commands into this interface and execute them
+  If a main function is not specified, Shulker Box will open an interpreter interface. Users can directly write commands into this interface and execute them
