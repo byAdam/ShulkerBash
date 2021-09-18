@@ -5,7 +5,7 @@ import threading
 
 class App:
     def __init__(self, args):
-        self.opts, self.args = getopt.getopt(args, "f:d:lehb")
+        self.opts, self.args = getopt.getopt(args, "f:d:p:lehb")
 
     
         self.main_function = None
@@ -14,6 +14,7 @@ class App:
         self.show_errors = False
         self.camera = None
         self.debug = False
+        self.pack = False
 
         self.proccess_arguments()
 
@@ -33,6 +34,8 @@ class App:
                 self.show_help()
             if o == "-b":
                 self.debug = True
+            if o == "-p":
+                self.pack = v
         
         if len(self.args) == 1:
             self.main_function = self.args[0]
@@ -61,7 +64,7 @@ class App:
         self.interpreter = Interpreter(self.is_shell, self.is_looping)
         self.interpreter.read_functions(self.directory)
         self.world = self.interpreter.world
-        self.camera = Camera()
+        self.camera = Camera(self.pack)
     
     def exit(self):
         if self.camera is not None:

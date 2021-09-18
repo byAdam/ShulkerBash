@@ -1,0 +1,14 @@
+{
+   "num_mip_levels" : 4,
+   "padding" : 8,
+   "resource_pack_name" : "vanilla",
+   "texture_data" : {
+      "air":{
+         "textures":"textures/blocks/air"
+      },
+      "unknown":{
+         "textures":"textures/blocks/unknown"
+      }
+   },
+   "texture_name" : "atlas.terrain"
+}

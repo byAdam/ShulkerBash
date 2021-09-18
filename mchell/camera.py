@@ -5,6 +5,7 @@ import threading
 from enum import Enum
 from coordinates import Coordinates
 from world import Block
+from error import *
 
 class CameraState(Enum):
     INACTIVE = 0
@@ -16,19 +17,26 @@ class Camera():
     ## Block Pixels
     BP = 64
 
-    def __init__(self):
+    def __init__(self, pack_name):
         self.set_position(Coordinates(0, 0, 0))
         self.set_dimensions(Coordinates(2, 2, 1))
         self.screen = None
 
-        self.pack = Pack("pack")
+        self.packs = [Pack("pack")]
+
+        if pack_name:
+            self.packs.append(Pack(pack_name))
+
         self.state = CameraState.INACTIVE
 
 
     def draw_block(self, block, coordinates):
-        texture = self.pack.blocks["unknown"]
-        if block in self.pack.blocks:
-            texture = self.pack.blocks[block]
+        texture = self.packs[0].blocks["unknown"]
+
+        for p in self.packs:
+            if block in p.blocks:
+                texture = p.blocks[block]
+        
 
         self.screen.blit(texture, coordinates)
 
@@ -45,7 +53,7 @@ class Camera():
 
                     if block != "air":
                         break
-                
+
                 coordinates = (x * self.BP, (self.dimensions.y - y - 1) * self.BP)
 
                 self.draw_block(block, coordinates)

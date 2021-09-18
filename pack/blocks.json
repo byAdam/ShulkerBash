@@ -1,0 +1,8 @@
+{
+   "air" : {
+      "textures" : "air"
+   },
+   "unknown" : {
+      "textures" : "unknown"
+   }
+}

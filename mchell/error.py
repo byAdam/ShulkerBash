@@ -40,3 +40,8 @@ class InvalidSubfunctionException(Exception):
     def __init__(self, name):
         message = "Invalid Subfunction: {}\n".format(name)
         super().__init__(message)
+
+class InvalidResourcePackException(Exception):
+    def __init__(self, name):
+        message = "Invalid Resource Pack: {}\n".format(name)
+        super().__init__(message)
