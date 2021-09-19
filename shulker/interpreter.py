@@ -1,14 +1,14 @@
 from threading import Thread
-from app import main_app as app
+from shulker.app import main_app as app
 import os
 import time
 
-from world import World, Entity
-from command import CommandInfo
-from function import Function
-from coordinates import Coordinates
+from shulker.api.world import World, Entity
+from shulker.api.command import CommandInfo
+from shulker.api.function import Function
+from shulker.api.coordinates import Coordinates
 
-from error import UnknownFunctionException
+from shulker.api.error import UnknownFunctionException
 
 class Interpreter(Thread):
     def __init__(self, is_shell=True, is_looping=False):

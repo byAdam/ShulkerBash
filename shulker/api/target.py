@@ -1,8 +1,8 @@
 import re
 import random
-from command import Command
-from coordinates import Coordinates
-from app import main_app as app
+from shulker.api.command import Command
+from shulker.api.coordinates import Coordinates
+from shulker.app import main_app as app
 
 class Target:
     def __init__(self, selector):

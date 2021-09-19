@@ -1,11 +1,11 @@
 import pygame
-from pack import Pack
-from app import main_app as app
+from shulker.api.pack import Pack
+from shulker.app import main_app as app
 import threading
 from enum import Enum
-from coordinates import Coordinates
-from world import Block
-from error import *
+from shulker.api.coordinates import Coordinates
+from shulker.api.world import Block
+from shulker.api.error import *
 
 class CameraState(Enum):
     INACTIVE = 0

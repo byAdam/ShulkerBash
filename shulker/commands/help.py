@@ -1,7 +1,7 @@
-from command import Command
-from app import main_app as app
-from args import *
-from error import *
+from shulker.api.command import Command
+from shulker.app import main_app as app
+from shulker.api.args import *
+from shulker.api.error import *
 
 class HelpCommand(Command):
     def schemes(self):

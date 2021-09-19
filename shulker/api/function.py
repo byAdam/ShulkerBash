@@ -1,8 +1,8 @@
-from command import CommandInfo
+from shulker.api.command import CommandInfo
 import re
 import os
-from app import main_app as app
-from error import InvalidSubfunctionException
+from shulker.app import main_app as app
+from shulker.api.error import InvalidSubfunctionException
 
 class Function:
     def __init__(self, base_path, relative_path):

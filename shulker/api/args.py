@@ -1,7 +1,7 @@
-from world import *
-from command import CommandInfo
-from target import Target
-from coordinates import Coordinates
+from shulker.api.world import *
+from shulker.api.command import CommandInfo
+from shulker.api.target import Target
+from shulker.api.coordinates import Coordinates
 
 class DefaultArg:
     type_name = "string"

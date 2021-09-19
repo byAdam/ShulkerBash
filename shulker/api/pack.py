@@ -1,7 +1,7 @@
 import os
 import pygame
 import json
-from error import *
+from shulker.api.error import *
 
 class Pack:
     def __init__(self, path):

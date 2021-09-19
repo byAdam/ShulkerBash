@@ -1,6 +1,6 @@
-from app import main_app as app
-from coordinates import Coordinates
-from error import *
+from shulker.app import main_app as app
+from shulker.api.coordinates import Coordinates
+from shulker.api.error import *
 
 class CommandInfo:
     def __init__(self, raw, execute_at = None, execute_by = None, execute_in = None):
@@ -33,6 +33,7 @@ class CommandInfo:
                     raise e
 
                 if app.show_errors:
+                    raise e
                     print(e)
 
     def get_command(self):
@@ -58,7 +59,7 @@ class Command:
 
     def execute_valid(self, execute_at, execute_by, execute_in):
         if self.valid:
-            from commands.function import FunctionCommand
+            from shulker.commands.function import FunctionCommand
             if type(self) is FunctionCommand:
                 self.execute(execute_at, execute_by, execute_in)
             else:
@@ -105,7 +106,7 @@ class Command:
 
     @classmethod
     def get_help(cls, command, indent=False):
-        from args import ListArg
+        from shulker.api.args import ListArg
 
         if indent:
             command = "  " + command

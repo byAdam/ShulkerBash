@@ -58,8 +58,8 @@ class App:
         self.exit()
     
     def start(self):
-        from camera import Camera
-        from interpreter import Interpreter
+        from shulker.camera import Camera
+        from shulker.interpreter import Interpreter
 
         self.interpreter = Interpreter(self.is_shell, self.is_looping)
         self.interpreter.read_functions(self.directory)

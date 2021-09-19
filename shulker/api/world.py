@@ -1,7 +1,7 @@
 import uuid
 from math import sqrt
 
-from error import UnknownObjectiveException, NoTargetsException
+from shulker.api.error import UnknownObjectiveException, NoTargetsException
 
 class World:
     def __init__(self):

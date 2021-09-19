@@ -1,8 +1,8 @@
-from command import Command
-from app import main_app as app
+from shulker.api.command import Command
+from shulker.app import main_app as app
 import sys
-from args import *
-from coordinates import Coordinates
+from shulker.api.args import *
+from shulker.api.coordinates import Coordinates
 
 class FillCommand(Command):
     def schemes(self):
