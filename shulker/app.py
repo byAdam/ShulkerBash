@@ -6,7 +6,6 @@ import threading
 class App:
     def __init__(self, args):
         self.opts, self.args = getopt.getopt(args, "f:d:p:lehb")
-
     
         self.main_function = None
         self.directory = None
