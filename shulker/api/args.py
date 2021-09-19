@@ -61,7 +61,7 @@ class BlockArg(DefaultArg):
             except:
                 return None
         
-        if 0 <= data <= 16:
+        if -1 <= data <= 16:
             return Block(args[index], data)
         return None
     

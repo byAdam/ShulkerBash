@@ -44,7 +44,6 @@ class Camera():
     def draw_blocks(self):
         for x in range(0, self.dimensions.x):
             for y in range(0, self.dimensions.y):
-                ## Todo: Add z coordinate
                 bx = self.coordinates.x + x
                 by = self.coordinates.y + y
 

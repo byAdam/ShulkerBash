@@ -100,7 +100,8 @@ class Interpreter(Thread):
                     start = time.time()
                     self.run_function_loop()
                     duration = time.time() - start
-                    time.sleep(0.05 - duration)
+                    
+                    time.sleep(max(0.05 - duration, 0))
             else:
                 self.run_function_loop()
                 app.exit()

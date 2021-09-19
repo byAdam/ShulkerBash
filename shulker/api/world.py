@@ -100,6 +100,9 @@ class Block:
     def __str__(self):
         return "<Block {}:{}>".format(self.identifier, self.data)
 
+    def __eq__(self, other):
+        return self.identifier == other.identifier and (self.data == -1 or other.data == -1 or self.data == other.data)
+
 class Entity:
     def __init__(self, identifier, coordinates, name = None, euuid = None):
         if euuid is None:
