@@ -96,7 +96,7 @@ class Interpreter(Thread):
                 self.proccess_stack()
         else:
             if self.is_looping:
-                while True:
+                while not app.is_exit:
                     start = time.time()
                     self.run_function_loop()
                     duration = time.time() - start

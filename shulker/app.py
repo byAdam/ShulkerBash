@@ -14,6 +14,7 @@ class App:
         self.camera = None
         self.debug = False
         self.pack = False
+        self.is_exit = False
 
         self.proccess_arguments()
 
@@ -66,6 +67,7 @@ class App:
         self.camera = Camera(self.pack)
     
     def exit(self):
+        self.is_exit = True
         if self.camera is not None:
             self.camera.end()
         sys.exit(0)
