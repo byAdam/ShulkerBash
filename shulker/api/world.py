@@ -1,6 +1,7 @@
 import uuid
 from math import sqrt
 
+from shulker.api.coordinates import Coordinates
 from shulker.api.error import UnknownObjectiveException, NoTargetsException
 
 class World:
@@ -29,7 +30,7 @@ class World:
         for e in self.entities.values():
             if target.match(e, execute_at, execute_by):
                 entities.append(e)
-
+    
         if need_target and len(entities) == 0:
             raise NoTargetsException()
 
@@ -62,6 +63,7 @@ class World:
     def get_score(self, entity, objective, default = None):
         if objective in self.scoreboards:
             score = self.scoreboards[objective].get_score(entity)
+
             if score is None:
                 return default
             return score
@@ -145,3 +147,7 @@ class Entity:
 
     def __hash__(self):
         return hash(self.uuid) 
+
+class ScoreEntity(Entity):
+    def __init__(self, name):
+        super().__init__(None, Coordinates(0, 0, 0), name)

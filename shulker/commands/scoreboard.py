@@ -3,6 +3,8 @@ from shulker.app import main_app as app
 import sys
 from shulker.api.args import *
 from random import randint
+from shulker.api.world import ScoreEntity
+from shulker.api.error import NoTargetsException
 
 class ScoreboardCommand(Command):
     def schemes(self):
@@ -33,8 +35,22 @@ class ScoreboardCommand(Command):
         elif self.pargs["method"] == "remove":
             app.world.remove_objective(self.pargs["objective"])
 
+    def find_or_create_entities(self, target, execute_at, execute_by):
+        try:
+            entities = app.world.find_entities(target, execute_at, execute_by)
+        except Exception as e:
+            if target.is_name:
+                entities = [ScoreEntity(target.args["name"])]
+                app.world.set_entity(entities[0])
+
+            else:
+                raise NoTargetsException()
+        
+        return entities
+        
+
     def execute_players(self, execute_at, execute_by):
-        entities = app.world.find_entities(self.pargs["target"], execute_at, execute_by)
+        entities = self.find_or_create_entities(self.pargs["target"], execute_at, execute_by)
 
         method = self.pargs["method"]
         for e in entities:
@@ -61,7 +77,7 @@ class ScoreboardCommand(Command):
             elif method == "operation":
                 score_a = app.world.get_score(e, self.pargs["objective"], 0)
 
-                for other in app.world.find_entities(self.pargs["target_b"], execute_at, execute_by):
+                for other in self.find_or_create_entities(self.pargs["target_b"], execute_at, execute_by):
                     score_b = app.world.get_score(other, self.pargs["objective_b"], 0)
 
                     score_new = self.evaluate_operator(score_a, score_b, self.pargs["operator"])

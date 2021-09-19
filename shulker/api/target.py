@@ -1,6 +1,7 @@
 import re
 import random
 from shulker.api.command import Command
+from shulker.api.world import ScoreEntity
 from shulker.api.coordinates import Coordinates
 from shulker.app import main_app as app
 
@@ -17,11 +18,13 @@ class Target:
             "self": False
         }
 
+        self.is_name = False
         self.process_selector()
 
     def process_selector(self):
         if self.selector[0] != "@":
-            self.args["name"] = self.selector[0]
+            self.args["name"] = self.selector
+            self.is_name = True
         else:
             ## Todo: Rewrite this whole section
 
@@ -106,6 +109,10 @@ class Target:
             if execute_by is not None:
                 if execute_by != entity:
                     return False
+
+        ## If target is a name entity:
+        if self.is_name:
+            return type(entity) is ScoreEntity and self.args["name"] == entity.name
 
         coordinates = execute_at.merge(self.args["coordinates"])
 

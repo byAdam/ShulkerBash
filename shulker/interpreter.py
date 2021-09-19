@@ -56,6 +56,10 @@ class Interpreter(Thread):
     
     def read_functions_in_directory(self, base, current=""):
         dpath = os.path.join(base, current)
+        
+        if dpath == "":
+            dpath = "."
+
         for f in os.listdir(dpath):
             ## Total path
             fpath = os.path.join(dpath, f)
