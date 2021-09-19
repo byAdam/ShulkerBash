@@ -2,6 +2,7 @@ import pygame
 from shulker.api.pack import Pack
 from shulker.app import main_app as app
 import threading
+import os, sys
 from enum import Enum
 from shulker.api.coordinates import Coordinates
 from shulker.api.world import Block
@@ -22,7 +23,7 @@ class Camera():
         self.set_dimensions(Coordinates(2, 2, 1))
         self.screen = None
 
-        self.packs = [Pack("pack")]
+        self.packs = [Pack(os.path.join(sys.path[0],"pack"))]
 
         if pack_name:
             self.packs.append(Pack(pack_name))

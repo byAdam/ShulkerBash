@@ -51,7 +51,7 @@ class App:
 
 
     def show_help(self):
-        with open("help.md") as f:
+        with open(os.path.join(sys.path[0],"help.md")) as f:
             lines = f.readlines()
         print("".join(lines))
 
