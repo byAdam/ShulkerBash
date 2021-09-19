@@ -1,13 +1,14 @@
 from cx_Freeze import setup, Executable
 
 bdist_msi_options = {
-    'upgrade_code': '{5fa7309a-bb70-42bb-bb83-6b1ee24f5026}',
+    'upgrade_code': '{64464af1-c1da-4029-b421-d19fe1d509fb}',
     'add_to_path': True,
-    'initial_target_dir': r'[ProgramFilesFolder]\%s' % ("shulker")
+    'initial_target_dir': r'[ProgramFilesFolder]\%s' % ("shulker"),
+    "install-icon": "icon.ico"
     }
 
 build_exe_options = {
-    'packages': ['shulker', 'shulker.commands'],
+    'packages': ['shulker'],
     'includes': ['atexit'],
     'include_files': ["pack/"]
     }
