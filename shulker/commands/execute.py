@@ -12,15 +12,17 @@ class ExecuteCommand(Command):
         ]
     
     def execute(self, execute_at, execute_by):
-        coordinates = execute_at.merge(self.pargs.get("coordinates"))
         entities = app.world.find_entities(self.pargs["target"], execute_at, execute_by)
 
         command = self.pargs["command"]
 
         for e in entities:
+            ecoords = e.coordinates
+            coordinates = ecoords.merge(self.pargs.get("coordinates"))
+
             ## If blocks don't match, skip command execution
             if "detect" in self.pargs:
-                dcoords = e.coordinates.merge(self.pargs.get("dcoordinates"))
+                dcoords = coordinates.merge(self.pargs.get("dcoordinates"))
                 dblock = self.pargs["block"]
                 rblock = app.world.get_block(dcoords)
 
