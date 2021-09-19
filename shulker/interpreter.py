@@ -7,7 +7,6 @@ from shulker.api.world import World, Entity
 from shulker.api.command import CommandInfo
 from shulker.api.function import Function
 from shulker.api.coordinates import Coordinates
-
 from shulker.api.error import UnknownFunctionException
 
 class Interpreter(Thread):
@@ -55,7 +54,7 @@ class Interpreter(Thread):
         while self.command_stack:
             self.command_stack.pop().execute()
     
-    def read_functions(self, base, current = ""):
+    def read_functions_in_directory(self, base, current=""):
         dpath = os.path.join(base, current)
         for f in os.listdir(dpath):
             ## Total path
@@ -64,7 +63,7 @@ class Interpreter(Thread):
             cpath = os.path.join(current, f)
 
             if os.path.isdir(fpath):
-                self.read_functions(base, cpath)
+                pass
             else:
                 fname, extension = os.path.splitext(cpath)
                 if extension == ".mcfunction":
@@ -79,6 +78,11 @@ class Interpreter(Thread):
         if execute_in is not None:
             fname = os.path.join(os.path.dirname(execute_in), fname)
 
+        # Read all functions in folder
+        if fname not in self.functions:
+            self.read_functions_in_directory(app.directory, os.path.dirname(fname))
+
+        # If found function
         if fname in self.functions:
             self.command_stack += self.functions[fname].get_commands_for_stack(execute_at, execute_by)
         else:

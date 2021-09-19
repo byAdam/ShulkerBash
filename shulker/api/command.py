@@ -33,7 +33,6 @@ class CommandInfo:
                     raise e
 
                 if app.show_errors:
-                    raise e
                     print(e)
 
     def get_command(self):

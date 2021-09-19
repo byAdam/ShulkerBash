@@ -52,7 +52,7 @@ class Pack:
                     else:
                         terrain[k] = texture[0]["path"]
         return terrain
-    
+
     def create_block_map(self):
         blocks = {}
 

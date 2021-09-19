@@ -59,9 +59,9 @@ class App:
     def start(self):
         from shulker.camera import Camera
         from shulker.interpreter import Interpreter
-
+        
         self.interpreter = Interpreter(self.is_shell, self.is_looping)
-        self.interpreter.read_functions(self.directory)
+        self.interpreter.read_functions_in_directory(self.directory)
         self.world = self.interpreter.world
         self.camera = Camera(self.pack)
     
