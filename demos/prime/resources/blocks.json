@@ -1,0 +1,55 @@
+{
+   "background" : {
+      "textures" : "background"
+   },
+   "dark_background": {
+      "textures": "dark_background" 
+   },
+   "back":
+   {
+      "textures": "back"
+   },
+   "q":
+   {
+      "textures": "q"
+   },
+   "yes":
+   {
+      "textures": "yes"
+   },
+   "no":
+   {
+      "textures": "no"
+   },
+   "l0" : {
+      "textures" : "l0"
+   },
+   "l1" : {
+      "textures" : "l1"
+   },
+   "l2" : {
+      "textures" : "l2"
+   },
+   "l3" : {
+      "textures" : "l3"
+   },
+   "l4" : {
+      "textures" : "l4"
+   },
+   "l5" : {
+      "textures" : "l5"
+   },
+   "l6" : {
+      "textures" : "l6"
+   },
+   "l7" : {
+      "textures" : "l7"
+   },
+   "l8" : {
+      "textures" : "l8"
+   },
+   "l9" : {
+      "textures" : "l9"
+   },
+   "redstone":{"textures": "redstone"}
+}

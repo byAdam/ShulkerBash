@@ -1,0 +1,56 @@
+{
+   "texture_data" : {
+      "background" : {
+         "textures" : "textures/blocks/background"
+      },
+      "dark_background": 
+      {
+         "textures" : "textures/blocks/dark_background"
+      },
+      "back":{
+         "textures": "textures/blocks/light/back"
+      },
+      "q":{
+         "textures": "textures/blocks/dark/q"
+      },
+      "yes":{
+         "textures": "textures/blocks/dark/yes"
+      },
+      "no":{
+         "textures": "textures/blocks/dark/no"
+      },
+      "l0": {
+         "textures" : "textures/blocks/light/0"
+      },
+      "l1": {
+         "textures" : "textures/blocks/light/1"
+      },
+      "l2": {
+         "textures" : "textures/blocks/light/2"
+      },
+      "l3": {
+         "textures" : "textures/blocks/light/3"
+      },
+      "l4": {
+         "textures" : "textures/blocks/light/4"
+      },
+      "l5": {
+         "textures" : "textures/blocks/light/5"
+      },
+      "l6": {
+         "textures" : "textures/blocks/light/6"
+      },
+      "l7": {
+         "textures" : "textures/blocks/light/7"
+      },
+      "l8": {
+         "textures" : "textures/blocks/light/8"
+      },
+      "l9": {
+         "textures" : "textures/blocks/light/9"
+      },
+      "redstone": {
+         "textures" : "textures/blocks/redstone"
+      }
+   }
+}

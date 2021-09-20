@@ -20,7 +20,7 @@ class HelpCommand(Command):
         else:
             commands = app.interpreter.commands
             print("Commands:")
-            for command in commands:
+            for command in sorted(commands):
                 print("  "+command)
 
 app.interpreter.add_command(HelpCommand, "help")
