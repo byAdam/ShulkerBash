@@ -28,12 +28,81 @@ When you install Shulker Bash, it adds "shulker" as a system command (Windows).
 You can run a program on the interpreter by specifying the path of the main mcfunction as a command line argument. The directory of the mcfunction file will act as the root directory. If no path is specified, Shulker Bash will enter the shell.
 The main mcfunction file is ran relative to an entity of type "player" and name "main" 
 
-There is a number of flags you can specify:
-- -h, --help: Output a list of valid arguments
-- -r, --read: Import world from 'world.json'
-- -w, --write: Export world to 'world.json' on exit
-- -l, --loop: Runs the program 20 times per second until exit
-- -d, --dir = VALUE: Set the base directory of the program
+Usage: shulker [options] [main_function]
 
+Options and arguments:
+  -f  : path of main function
+  -d  : directory of functions
+  -l  : loop main function
+  -e  : hide errors
+  -h  : print this help message and exit
+  -b  : debugs the code
+  -p  : path to a resource pack
+  main_function: path of main function
+ 
 ## Bugs and Issues
 Please report any bugs and issues you find [here](https://github.com/byAdam/Shulker Bash/issues). If you have any questions or queries, feel free to contact me by email (adambrady2000@gmail.com) or on [Twitter](https://twitter.com/byAdam_Net)
+***
+# Technical Details
+## Implemented Commands
+ - /camera
+ - /debug
+ - /execute
+ - /exit
+ - /quit
+ - /fill
+ - /function
+ - /help
+ - /kill
+ - /say
+ - /scoreboard
+ - /setblock
+ - /summon
+ - /tag
+ - /teleport
+ - /tp
+
+## Implemented Selectors
+- @a
+- @e
+- @p
+- @r
+- @s
+
+## Implemented Selector Arguments
+ - x, y, z
+ - dx, dy, dz
+ - r, rm
+ - name
+ - scores
+ - tag
+ - type
+ - c
+
+## Custom Syntax
+
+### camera
+Usage:
+- camera position <position: x y z>
+- camera dimensions <dimensions: x y z>
+- camera <start|stop>
+
+Description: FINISH THIS
+
+### exit / quit
+Description: exits the program
+
+### [def FUNC_NAME](#defining-function)
+- Defines a function within a mcfunction file
+- You do this by typing `def FUNC_NAME` followed by a number of indented lines
+- Note: When a mcfunction is called for the first time, any functions defined within it will overide functions with the same name
+- E.G
+```
+def loop
+    say This is a loop
+    function loop
+
+say Before Loop
+function loop
+```
+
