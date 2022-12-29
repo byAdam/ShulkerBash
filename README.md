@@ -41,7 +41,9 @@ Options and arguments:
   main_function: path of main function
  
 ## Bugs and Issues
-Please report any bugs and issues you find [here](https://github.com/byAdam/Shulker Bash/issues). If you have any questions or queries, feel free to contact me by email (adambrady2000@gmail.com) or on [Twitter](https://twitter.com/byAdam_Net)
+Please report any bugs and issues you find [here](https://github.com/byAdam/ShulkerBash/issues). 
+
+If you have any questions or queries, feel free to contact me by email (adambrady2000@gmail.com) or on [Twitter](https://twitter.com/byAdamNet)
 ***
 # Technical Details
 ## Implemented Commands
